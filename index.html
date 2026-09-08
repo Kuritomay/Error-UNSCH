@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Centro de mando de preparación UNSCH 2027-I" />
+    <meta name="theme-color" content="#0f172a" />
+    <title>UNSCH Control Room</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#inicio" aria-label="Ir al centro de mando"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 4h22v24H5zM10 9v14M16 9v14M22 9v14" /></svg><span>UNSCH <b>CONTROL</b></span></a>
+        <nav aria-label="Navegación principal">
+          <a class="nav-link active" href="#inicio"><span>01</span>Centro de mando</a>
+          <a class="nav-link" href="#microtemas"><span>02</span>Microtemas</a>
+          <a class="nav-link" href="#errores"><span>03</span>Registro de fallos</a>
+          <a class="nav-link" href="#estrategia"><span>04</span>Estrategia</a>
+        </nav>
+        <div class="countdown-side" aria-live="polite"><p>EXAMEN DE ADMISIÓN</p><strong id="countdown-days">--</strong><span>días para detectar lo que falta</span><small>22 NOV 2026 · UNSCH</small></div>
+        <div class="sidebar-bottom">
+          <label for="area">ÁREA ACADÉMICA</label><select id="area"><option value="science">I · Ciencias</option><option value="letters">II · Letras</option></select>
+          <button class="side-button" id="plan-button">Configurar campaña</button>
+        </div>
+      </aside>
+
+      <main>
+        <header class="topbar" id="inicio">
+          <div><p class="eyebrow">PREPARACIÓN ORIENTADA A FALLOS</p><h1>Centro de mando</h1></div>
+          <div class="top-actions"><span class="storage-state"><i></i>Guardado en este dispositivo</span><button class="button secondary" id="attempt-button">Registrar intento</button></div>
+        </header>
+
+        <section class="mission" aria-labelledby="phase-title">
+          <div class="mission-copy"><p class="eyebrow inverse">MISIÓN ACTIVA · 20 → 10 → 20</p><h2 id="phase-title">Cargando campaña…</h2><p id="phase-objective"></p><div class="phase-progress" aria-label="Progreso de fases"><span id="build-progress">CONSTRUIR</span><i></i><span id="break-progress">ROMPER</span><i></i><span id="repair-progress">REPARAR</span></div></div>
+          <div class="countdown-main"><span>TIEMPO RESTANTE</span><strong id="countdown-full">--d --h --m</strong><p>El objetivo no es evitar fallar.<br />Es fallar con tiempo para corregir.</p></div>
+        </section>
+
+        <section class="metric-grid" aria-label="Métricas basadas en evidencia">
+          <article><span>Cobertura ponderada</span><strong id="metric-coverage">0%</strong><small>valor, no cantidad</small></article>
+          <article><span>K3 prioritarios</span><strong id="metric-k3">0 / 0</strong><small>demostrados con evidencia</small></article>
+          <article><span>Preguntas nuevas</span><strong id="metric-fresh">—</strong><small>precisión en ítems no vistos</small></article>
+          <article><span>Retención 72 h</span><strong id="metric-retention">—</strong><small>revisión diferida</small></article>
+          <article><span>Tiempo / pregunta</span><strong id="metric-time">—</strong><small>mediana, no promedio</small></article>
+          <article class="danger-metric"><span>Errores reincidentes</span><strong id="metric-repeated">0</strong><small>patrones que requieren intervención</small></article>
+        </section>
+
+        <div class="decision-grid">
+          <section class="panel next-panel" aria-labelledby="next-title"><div class="panel-heading"><div><p class="eyebrow">DECISIÓN DE HOY</p><h2 id="next-title">Siguiente acción</h2></div><span class="formula" id="decision-formula">P0 = H × I × U</span></div><p class="panel-intro" id="decision-explanation"></p><ol class="action-list" id="action-list"></ol><button class="button secondary" id="view-strategy">Ver por qué se priorizó</button></section>
+          <section class="panel failure-panel" id="errores" aria-labelledby="failure-title"><div class="panel-heading"><div><p class="eyebrow">BUCLE DE INGENIERÍA</p><h2 id="failure-title">Provocar fallos temprano</h2></div></div><div class="loop"><div><b>1</b><span>Pregunta nueva y cronometrada</span></div><div><b>2</b><span>Fallo clasificado, no ocultado</span></div><div><b>3</b><span>Intervención mínima eficaz</span></div><div><b>4</b><span>Variante mezclada para verificar</span></div></div><div class="recurrent-alert" id="recurrent-alert"><strong>Sin fallos registrados aún.</strong><span>Registra el primero: el sistema necesita evidencia.</span></div><button class="button primary" id="error-button">Registrar un fallo <span>+</span></button></section>
+        </div>
+
+        <section class="panel evidence-panel" aria-labelledby="evidence-title"><div class="panel-heading"><div><p class="eyebrow">ESCALA K · NO ES AUTOEVALUACIÓN</p><h2 id="evidence-title">Evidencia de dominio</h2></div><button class="text-button" id="show-k-rules">Ver criterios K1–K5</button></div><div class="k-scale"><div><b>K0</b><span>Desconocido</span><small>Sin evidencia</small></div><div><b>K1</b><span>Comprensión</span><small>Primer intento</small></div><div><b>K2</b><span>Reconocimiento</span><small>2 intentos</small></div><div class="target"><b>K3</b><span>Aplicación</span><small>≥70% nuevo</small></div><div><b>K4</b><span>Transferencia</span><small>Mezclado ≥80%</small></div><div><b>K5</b><span>Automático</span><small>Tiempo + 72 h</small></div></div></section>
+
+        <section class="panel ledger-panel" aria-labelledby="ledger-title"><div class="panel-heading"><div><p class="eyebrow">BITÁCORA AUDITABLE</p><h2 id="ledger-title">Fallos recientes y su reparación</h2></div><span class="formula">FALLO → CORRECCIÓN → VARIANTE</span></div><div class="ledger-list" id="ledger-list"></div></section>
+
+        <section class="topics-section" id="microtemas" aria-labelledby="topics-title"><div class="section-head"><div><p class="eyebrow">CATÁLOGO OFICIAL · NINGÚN TEMA SE BORRA</p><h2 id="topics-title">Todos los microtemas</h2><p id="catalog-summary">Cargando catálogo…</p></div><button class="button secondary" id="strategy-button">Recalcular estrategia</button></div><div class="filters" role="toolbar" aria-label="Filtros de microtemas"><button class="filter active" data-treatment="all">Todos</button><button class="filter" data-treatment="deep">Profundo</button><button class="filter" data-treatment="surface">Superficial</button><button class="filter" data-treatment="deferred">Diferido</button><button class="filter" data-treatment="risk">En riesgo</button><select id="course-filter" aria-label="Filtrar por curso"><option value="all">Todos los cursos</option></select><select id="k-filter" aria-label="Filtrar por nivel K"><option value="all">Todos los niveles K</option><option value="K0">K0</option><option value="K1">K1</option><option value="K2">K2</option><option value="K3">K3</option><option value="K4">K4</option><option value="K5">K5</option></select></div><div class="table-wrap"><table><thead><tr><th>Microtema</th><th>Tratamiento</th><th>P0</th><th>K</th><th>Nuevas</th><th>72 h</th><th>Tiempo</th><th>Fallos</th><th>R</th></tr></thead><tbody id="topics-body"></tbody></table></div><p class="table-note">Diferido significa “no invertir tiempo todavía”, nunca “eliminado”. Se reevaluará al iniciar Reparar.</p></section>
+
+        <section class="strategy-strip" id="estrategia"><div><p class="eyebrow inverse">SISTEMA DE APOYO A DECISIONES</p><h2>La estrategia se adapta a la evidencia.</h2><p>El algoritmo recomienda. Tú decides qué cambio aceptar.</p></div><div class="strategy-numbers" id="strategy-numbers"></div><button class="button light" id="review-button">Revisar cambios</button></section>
+      </main>
+    </div>
+
+    <dialog id="attempt-dialog"><form id="attempt-form"><div class="dialog-title"><div><p class="eyebrow">EVIDENCIA NUEVA</p><h2>Registrar intento</h2></div><button type="button" class="close" data-close="attempt-dialog" aria-label="Cerrar">×</button></div><p class="dialog-copy">Un intento correcto lento también es señal. Regístralo para que el sistema no confunda conocimiento con rendimiento.</p><div class="form-grid"><label>Microtema<select id="attempt-topic" required></select></label><label>Fuente / pregunta<input id="attempt-source" placeholder="UNSCH 2026 · Física #12" required /></label><label>Resultado<select id="attempt-result"><option value="true">Correcta</option><option value="false">Incorrecta</option></select></label><label>Tiempo (segundos)<input id="attempt-time" type="number" min="1" placeholder="90" required /></label><label>Tipo de pregunta<select id="attempt-new"><option value="true">Nueva</option><option value="false">Repetida</option></select></label><label>Revisión<select id="attempt-review"><option value="normal">Primera vez</option><option value="24">Retención 24 h</option><option value="72">Retención 72 h</option><option value="168">Retención 7 días</option></select></label></div><fieldset id="failure-fields"><legend>Diagnóstico del fallo</legend><div class="form-grid"><label>Fallo primario<select id="error-type"><option value="recognition">No reconocí el modelo</option><option value="concept">Olvidé concepto</option><option value="wrong-model">Modelo equivocado</option><option value="procedure">Procedimiento</option><option value="calculation">Cálculo</option><option value="reading">Lectura</option><option value="time">Tiempo</option><option value="distractor">Distractor</option></select></label><label>Corrección mínima<textarea id="error-correction" placeholder='Ej.: “cada N unidades” + “coincidir nuevamente” → MCM'></textarea></label></div></fieldset><div class="dialog-actions"><button type="button" class="button secondary" data-close="attempt-dialog">Cancelar</button><button class="button primary" type="submit">Guardar evidencia</button></div></form></dialog>
+
+    <dialog id="strategy-dialog"><div class="dialog-title"><div><p class="eyebrow">REVISIÓN ESTRATÉGICA</p><h2>Recomendaciones explicables</h2></div><button class="close" data-close="strategy-dialog" aria-label="Cerrar">×</button></div><p class="dialog-copy">Las recomendaciones no cambian tu plan por sí solas. Se basan en prioridad inicial antes del día 21 y en riesgo observado después.</p><div id="recommendation-list"></div><div class="dialog-actions"><button class="button secondary" data-close="strategy-dialog">Revisar manualmente</button><button class="button primary" id="accept-recommendations">Aceptar recomendaciones</button></div></dialog>
+
+    <dialog id="plan-dialog"><form id="plan-form"><div class="dialog-title"><div><p class="eyebrow">CAMPAÑA 20 → 10 → 20</p><h2>Configurar fechas</h2></div><button type="button" class="close" data-close="plan-dialog" aria-label="Cerrar">×</button></div><p class="dialog-copy">El examen es fijo: 22 de noviembre de 2026. El ciclo principal ocupa 50 días y deja el tramo final para simulacros y recuperación.</p><label>Inicio de la campaña<input id="campaign-start" type="date" required /></label><div class="plan-calendar"><span>Construir<br /><b>20 días</b></span><span>Romper<br /><b>10 días</b></span><span>Reparar<br /><b>20 días</b></span><span>Final<br /><b>simulacros</b></span></div><div class="dialog-actions"><button type="button" class="button secondary" data-close="plan-dialog">Cancelar</button><button class="button primary" type="submit">Guardar campaña</button></div></form></dialog>
+
+    <dialog id="k-dialog"><div class="dialog-title"><div><p class="eyebrow">REGLAS DE EVIDENCIA</p><h2>Cómo se asigna K</h2></div><button class="close" data-close="k-dialog" aria-label="Cerrar">×</button></div><div class="rules"><p><b>K1 · comprensión:</b> existe al menos un intento registrado.</p><p><b>K2 · reconocimiento:</b> al menos dos intentos.</p><p><b>K3 · aplicación:</b> dos preguntas nuevas y precisión nueva ≥70%.</p><p><b>K4 · transferencia:</b> cuatro nuevas/mezcladas y precisión ≥80%.</p><p><b>K5 · automático:</b> K4, retención 72 h ≥85%, tiempo ≤90 s y sin fallo reincidente.</p></div></dialog>
+    <script src="app.js"></script>
+  </body>
+</html>
