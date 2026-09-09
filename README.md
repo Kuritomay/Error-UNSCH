@@ -15,6 +15,19 @@ El objetivo no es ocultar los errores: es producirlos temprano, clasificarlos y 
 
 El catálogo oficial está incluido en `app.js`. Los intentos, los errores y las fechas se guardan en `localStorage` del navegador. Por eso funciona sin servidor y se puede desplegar directamente en Vercel, pero los datos no se sincronizan entre dispositivos todavía.
 
+## Interfaz y navegación
+
+La barra lateral muestra una vista a la vez y permite navegar directamente entre los cuatro apartados:
+
+- **Centro de mando:** campaña activa, métricas, siguiente acción y evidencia de dominio.
+- **Microtemas:** catálogo oficial con filtros por tratamiento, curso y nivel K.
+- **Registro de fallos:** registro de intentos incorrectos, patrones reincidentes y bitácora de reparaciones.
+- **Estrategia:** resumen de tratamientos y recomendaciones basadas en la evidencia registrada.
+
+Cada apartado puede abrirse mediante su fragmento de URL: `#inicio`, `#microtemas`, `#errores` o `#estrategia`.
+
+La cuenta regresiva principal presenta días, horas, minutos y segundos con el mismo tamaño; los segundos se resaltan en rojo. El sitio utiliza `favicon.svg`, un icono propio basado en el símbolo de UNSCH Control.
+
 ## Despliegue en Vercel
 
 1. Sube esta carpeta a un repositorio de GitHub.
