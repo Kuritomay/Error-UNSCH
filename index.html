@@ -13,6 +13,21 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <svg class="practice-symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+      <symbol id="practice-math" viewBox="0 0 32 32"><path d="M5 10h22M10 10v16M22 10v12c0 3 2 4 4 4M7 5h18"/></symbol>
+      <symbol id="practice-science" viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="14" ry="5"/><ellipse cx="16" cy="16" rx="14" ry="5" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="14" ry="5" transform="rotate(120 16 16)"/><circle cx="16" cy="16" r="2"/></symbol>
+      <symbol id="practice-words" viewBox="0 0 32 32"><path d="M16 8C12 5 7 5 3 6v20c4-1 9-1 13 2 4-3 9-3 13-2V6c-4-1-9-1-13 2v20M7 11h5M7 16h5M20 11h5M20 16h5"/></symbol>
+      <symbol id="practice-humanities" viewBox="0 0 32 32"><path d="m3 10 13-7 13 7H3ZM6 14v10M13 14v10M20 14v10M27 14v10M3 28h26"/></symbol>
+    </defs></svg>
+    <aside class="exam-clock" id="exam-clock" aria-label="Cuenta regresiva para el examen de admisión">
+      <div class="exam-clock-label"><span class="clock-dot" aria-hidden="true"></span><div><strong>RUMBO A LA UNSCH</strong><span>22 NOV 2026 · 08:00 · Perú</span></div></div>
+      <div class="exam-clock-digits" role="timer" aria-label="Tiempo restante para el examen" aria-live="off">
+        <span class="clock-unit"><b data-countdown="days">--</b><small>días</small></span><span class="clock-separator" aria-hidden="true">:</span>
+        <span class="clock-unit"><b data-countdown="hours">--</b><small>horas</small></span><span class="clock-separator" aria-hidden="true">:</span>
+        <span class="clock-unit"><b data-countdown="minutes">--</b><small>min</small></span><span class="clock-separator" aria-hidden="true">:</span>
+        <span class="clock-unit clock-seconds"><b data-countdown="seconds">--</b><small>seg</small></span>
+      </div>
+    </aside>
     <div class="app-shell">
       <aside class="sidebar">
         <a class="brand" href="#inicio" aria-label="Ir al centro de mando"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 4h22v24H5zM10 9v14M16 9v14M22 9v14" /></svg><span>UNSCH <b>CONTROL</b></span></a>
@@ -47,16 +62,25 @@
             <div class="dice-result" id="dice-result" role="status" aria-live="polite" aria-atomic="true"><p class="eyebrow">TU PRÓXIMO CURSO</p><h3 id="dice-course">Una base pequeña.<br />Muchos problemas más fáciles.</h3><p id="dice-detail">El dado elige con prioridad. Tú ganas soltura practicando.</p></div>
           </div>
 
-          <section class="mental-practice" id="mental-practice" hidden aria-labelledby="mental-question">
-            <div class="mental-meta"><span id="mental-topic"></span><span id="mental-kind"></span></div>
-            <h3 id="mental-question" tabindex="-1"></h3>
-            <p class="mental-instruction">Responde en tu cabeza antes de descubrir la solución. Sin calculadora.</p>
-            <button class="button primary" id="reveal-answer">Ver respuesta</button>
+          <section class="mental-practice" id="mental-practice" hidden aria-labelledby="mental-question" data-step="think">
+            <div class="mental-card-header"><div class="mental-course-heading"><span class="mental-course-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><use id="mental-course-icon" href="#practice-math"/></svg></span><div><p class="eyebrow">PRÁCTICA MENTAL</p><p id="mental-course"></p></div></div><span class="mental-kind" id="mental-kind"></span></div>
+            <ol class="mental-steps" aria-label="Pasos de la práctica"><li data-step="think"><b>1</b>Piensa</li><li data-step="learn"><b>2</b>Descubre</li><li data-step="review"><b>3</b>Refuerza</li></ol>
+            <div class="mental-question-board">
+              <p class="mental-topic" id="mental-topic"></p>
+              <h3 id="mental-question" tabindex="-1"></h3>
+              <p class="mental-instruction">Un momento para pensar. La respuesta está en tu cabeza.</p>
+              <button class="button primary" id="reveal-answer">Ver respuesta <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button>
+            </div>
             <div class="mental-solution" id="mental-solution" hidden>
-              <p class="eyebrow">LA RESPUESTA</p><p class="mental-answer" id="mental-answer"></p>
-              <p id="mental-explanation"></p><p class="mental-use"><b>Te sirve cuando…</b> <span id="mental-use"></span></p>
-              <p class="mental-instruction" id="mental-rating-label">¿Cómo te salió? Tu valoración organiza el próximo repaso.</p>
-              <div class="mental-ratings" role="group" aria-labelledby="mental-rating-label"><button class="button secondary" data-recall="again">No lo sabía</button><button class="button secondary" data-recall="slow">Me costó</button><button class="button secondary" data-recall="easy">Lo sabía rápido</button></div>
+              <div class="mental-answer-block"><p class="eyebrow">LA RESPUESTA</p><p class="mental-answer" id="mental-answer"></p></div>
+              <div class="mental-insights"><div><p class="mental-insight-label"><span aria-hidden="true">01</span> La idea clave</p><p id="mental-explanation"></p></div><div class="mental-transfer"><p class="mental-insight-label"><span aria-hidden="true">02</span> Te sirve cuando…</p><p id="mental-use"></p></div></div>
+              <div class="mental-recall"><p id="mental-rating-label">¿Cómo te salió?</p><p class="mental-instruction">Elige una opción para organizar tu próximo repaso.</p>
+                <div class="mental-ratings" role="group" aria-labelledby="mental-rating-label">
+                  <button class="button secondary" data-recall="again"><span class="recall-icon" aria-hidden="true">↻</span><span class="recall-copy"><b>No lo sabía</b><small>Volver a intentarlo</small></span></button>
+                  <button class="button secondary" data-recall="slow"><span class="recall-icon" aria-hidden="true">◷</span><span class="recall-copy"><b>Me costó</b><small>Ganar soltura</small></span></button>
+                  <button class="button secondary" data-recall="easy"><span class="recall-icon" aria-hidden="true">ϟ</span><span class="recall-copy"><b>Lo sabía rápido</b><small>Afianzar la base</small></span></button>
+                </div>
+              </div>
             </div>
             <p class="mental-feedback" id="mental-feedback" role="status"></p>
             <div class="mental-next" id="mental-next" hidden><button class="button primary" id="next-question">Otra del mismo curso</button><button class="button secondary" id="finish-practice">Terminar práctica</button></div>

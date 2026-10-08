@@ -6,6 +6,19 @@ const mentalSessionMisses = new Map();
 const mentalQuestionsByCourse = new Map(studyCourses.map(({ course }) => [course, mentalQuestionBank.filter((question) => question.course === course)]));
 const mentalCatalogTopics = new Map(catalog.map((topic) => [`${topic.course}|${topic.name}`, topic]));
 const MENTAL_REVIEW_DAYS = [1, 3, 7, 14, 30];
+const mentalCourseThemes = {
+  math: ["RLM", "Aritmética", "Álgebra", "Geometría", "Trigonometría"],
+  science: ["Física", "Química", "Biología", "Anatomía"],
+  words: ["Razonamiento verbal", "Lenguaje", "Literatura"]
+};
+
+function setMentalStep(step) {
+  document.querySelector("#mental-practice").dataset.step = step;
+  document.querySelectorAll(".mental-steps li").forEach((item) => {
+    if (item.dataset.step === step) item.setAttribute("aria-current", "step");
+    else item.removeAttribute("aria-current");
+  });
+}
 
 function mentalStats() { return state.mentalProgress || {}; }
 function mentalTopic(question) { return mentalCatalogTopics.get(`${question.course}|${question.topic}`); }
@@ -52,7 +65,12 @@ function startMentalPractice(course) {
   renderMentalProgress();
   const item = studyCourses.find((item) => item.course === course);
   const topic = mentalTopic(question);
-  document.querySelector("#mental-topic").textContent = `${item.label || course} · ${question.topic}`;
+  const theme = Object.keys(mentalCourseThemes).find((theme) => mentalCourseThemes[theme].includes(course)) || "humanities";
+  document.querySelector("#mental-practice").dataset.theme = theme;
+  document.querySelector("#mental-course-icon").setAttribute("href", `#practice-${theme}`);
+  document.querySelector("#mental-course").textContent = item.label || course;
+  document.querySelector("#mental-topic").textContent = question.topic;
+  setMentalStep("think");
   document.querySelector("#mental-kind").textContent = question.foundation ? "Herramienta base" : topic?.treatment === "deep" ? "Base de tema profundo" : "Base reutilizable";
   document.querySelector("#mental-question").textContent = question.prompt;
   document.querySelector("#mental-solution").hidden = true;
@@ -71,6 +89,7 @@ function startMentalPractice(course) {
 function revealMentalAnswer() {
   if (!activeMentalQuestion || activeMentalQuestion.revealed) return;
   activeMentalQuestion.revealed = true;
+  setMentalStep("learn");
   activeMentalQuestion.seconds = Math.max(1, Math.round((performance.now() - activeMentalQuestion.startedAt) / 1000));
   const question = activeMentalQuestion.question;
   document.querySelector("#mental-answer").textContent = question.answer;
@@ -84,6 +103,7 @@ function revealMentalAnswer() {
 function rateMentalRecall(rating) {
   if (!activeMentalQuestion?.revealed || activeMentalQuestion.rated || !["again", "slow", "easy"].includes(rating)) return;
   activeMentalQuestion.rated = true;
+  setMentalStep("review");
   const { question, seconds } = activeMentalQuestion;
   state.mentalProgress = state.mentalProgress || {};
   const previous = state.mentalProgress[question.id] || { seen: 0, stage: 0, misses: 0 };

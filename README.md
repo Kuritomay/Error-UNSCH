@@ -28,6 +28,8 @@ Cada apartado puede abrirse mediante su fragmento de URL: `#inicio`, `#microtema
 
 La cuenta regresiva principal presenta días, horas, minutos y segundos con el mismo tamaño; los segundos se resaltan en rojo. El sitio utiliza `favicon.svg`, un icono propio basado en el símbolo de UNSCH Control.
 
+Una barra de cuenta regresiva permanece fija en la parte superior en todas las vistas, tanto en móvil como en escritorio. Los diálogos incluyen una copia sincronizada del reloj para mantenerlo visible también al registrar intentos o configurar la campaña. Todos los relojes usan la misma fecha del examen y se actualizan cada segundo; la barra fija no genera anuncios continuos a lectores de pantalla.
+
 ## Dado de estudio
 
 En el centro de mando, **Lanzar dado** elige un curso con probabilidad ponderada. Cada lanzamiento es independiente y puede repetir resultado. Los pesos relativos propuestos son:
@@ -50,6 +52,8 @@ El dado está al inicio, con **Iniciar práctica** justo debajo. Cada lanzamient
 El banco local de `mental-questions.js` contiene **250 preguntas** para los 17 cursos: tablas del 6 al 9, porcentajes, MCD/MCM, ecuaciones, gráficas sencillas, geometría, razones trigonométricas, fuerzas y energía, etimología, gramática, cívica y bases de los otros cursos. Cada pregunta incluye respuesta, una explicación y **“Te sirve cuando…”**. Sus microtemas enlazan con el catálogo; la selección favorece las bases de temas profundos y herramientas como tablas, ángulos notables, raíces de palabras y gráficas elementales. “El 20%” es un criterio de utilidad, no un porcentaje demostrado de cobertura del examen.
 
 La interacción es de recuerdo activo: responde mentalmente, pulsa **Ver respuesta** y valora **No lo sabía**, **Me costó** o **Lo sabía rápido**. Puedes hacer otra del mismo curso o terminar. No hace falta escribir ni usar calculadora. Los valores trigonométricos exactos se distinguen de las aproximaciones escolares para 37° y 53°.
+
+Las preguntas se presentan en tarjetas con icono y acento de color por familia de cursos, enunciado destacado y una guía visual de tres pasos: **Piensa → Descubre → Refuerza**. La solución separa la respuesta, la idea clave y su uso en el examen; los botones de recuerdo incluyen iconos y etiquetas de texto.
 
 `mental-practice.js` prioriza repasos vencidos y preguntas nuevas, evitando repetir inmediatamente una pregunta. Las olvidadas se repasan tras otras preguntas de la sesión o al vencer 2 minutos; las lentas, tras 10 minutos. Las recordadas con soltura progresan por intervalos de 1, 3, 7, 14 y 30 días. Los repasos se seleccionan dentro del curso elegido. El tiempo mostrado mide desde la presentación hasta descubrir la respuesta, incluido cualquier tiempo de pausa.
 

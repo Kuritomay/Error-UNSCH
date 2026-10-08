@@ -106,7 +106,19 @@ function percent(value) { return value === null ? "—" : `${Math.round(value * 
 function formatTime(seconds) { if (seconds === null) return "—"; return seconds >= 60 ? `${Math.floor(seconds / 60)}m ${seconds % 60}s` : `${seconds}s`; }
 function treatmentLabel(treatment) { return treatment === "deep" ? "PROFUNDO" : treatment === "surface" ? "SUPERFICIAL" : "DIFERIDO"; }
 
-function renderCountdown() { const diff = Math.max(0, EXAM_DATE - Date.now()); const days = Math.floor(diff / 86400000); const hours = Math.floor((diff % 86400000) / 3600000); const minutes = Math.floor((diff % 3600000) / 60000); const seconds = Math.floor((diff % 60000) / 1000); document.querySelector("#countdown-days").textContent = days; document.querySelector("#countdown-primary").textContent = `${days}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m`; document.querySelector("#countdown-seconds").textContent = `${String(seconds).padStart(2, "0")}s`; }
+function renderCountdown() {
+  const diff = Math.max(0, EXAM_DATE - Date.now());
+  const values = { days: Math.floor(diff / 86400000), hours: Math.floor((diff % 86400000) / 3600000), minutes: Math.floor((diff % 3600000) / 60000), seconds: Math.floor((diff % 60000) / 1000) };
+  const padded = (value) => String(value).padStart(2, "0");
+  document.querySelector("#countdown-days").textContent = values.days;
+  document.querySelector("#countdown-primary").textContent = `${values.days}d ${padded(values.hours)}h ${padded(values.minutes)}m`;
+  document.querySelector("#countdown-seconds").textContent = `${padded(values.seconds)}s`;
+  document.querySelectorAll("[data-countdown]").forEach((element) => {
+    const text = padded(values[element.dataset.countdown]);
+    if (element.textContent !== text) element.textContent = text;
+  });
+  document.querySelectorAll(".exam-clock-digits").forEach((clock) => clock.setAttribute("aria-label", `${values.days} días, ${values.hours} horas, ${values.minutes} minutos y ${values.seconds} segundos para el examen`));
+}
 function renderMission() { const phase = phaseInfo(); document.querySelector("#phase-title").textContent = `${phase.title} · Día ${phase.day}/${phase.total}`; document.querySelector("#phase-objective").textContent = phase.objective; document.querySelector("#decision-formula").textContent = phase.formula; document.querySelectorAll(".phase-progress span").forEach((item) => item.classList.toggle("active", item.id.startsWith(phase.id))); }
 function renderMetrics() { const all = catalog.map((topic) => ({ topic, m: metrics(topic) })); const weightedTotal = all.reduce((sum, item) => sum + item.topic.p0 * 5, 0); const weightedProgress = all.reduce((sum, item) => sum + item.topic.p0 * Number(item.m.k.slice(1)), 0); const priority = all.filter((item) => item.topic.priority === "S" || item.topic.priority === "A"); const k3 = priority.filter((item) => Number(item.m.k.slice(1)) >= 3).length; const attempts = state.attempts; const fresh = attempts.filter((a) => a.isNew); const retention = attempts.filter((a) => a.review === "72"); const errors = attempts.filter((a) => !a.correct); const recurring = errors.filter((error) => errors.filter((other) => other.topicId === error.topicId && other.errorType === error.errorType).length > 1); document.querySelector("#metric-coverage").textContent = `${Math.round(weightedProgress / weightedTotal * 100)}%`; document.querySelector("#metric-k3").textContent = `${k3} / ${priority.length}`; document.querySelector("#metric-fresh").textContent = fresh.length ? percent(fresh.filter((a) => a.correct).length / fresh.length) : "—"; document.querySelector("#metric-retention").textContent = retention.length ? percent(retention.filter((a) => a.correct).length / retention.length) : "—"; document.querySelector("#metric-time").textContent = formatTime(median(attempts.map((a) => a.seconds))); document.querySelector("#metric-repeated").textContent = recurring.length; const counts = { deep: 0, surface: 0, deferred: 0 }; catalog.forEach((topic) => counts[topic.treatment]++); document.querySelector("#catalog-summary").textContent = `${catalog.length} microtemas oficiales cargados. ${counts.deep} profundos, ${counts.surface} superficiales y ${counts.deferred} diferidos por estrategia inicial.`; document.querySelector("#strategy-numbers").innerHTML = `<span><b>${counts.deep}</b>profundos</span><span><b>${counts.surface}</b>superficiales</span><span><b>${counts.deferred}</b>diferidos</span>`; }
 function recommendedTopics() { const phase = phaseInfo(); const enriched = catalog.map((topic) => ({ topic, m: metrics(topic) })); if (phase.id === "build") return enriched.filter((item) => item.topic.treatment !== "deferred" && Number(item.m.k.slice(1)) < 3).sort((a, b) => b.topic.p0 - a.topic.p0 || a.m.attempts.length - b.m.attempts.length).slice(0, 4); return enriched.filter((item) => item.m.attempts.length || item.topic.treatment === "deep").sort((a, b) => b.m.risk - a.m.risk).slice(0, 4); }
@@ -181,6 +193,13 @@ document.querySelector("#dice-attempt").addEventListener("click", () => {
   topics.sort((a, b) => phase.id === "build" ? b.p0 - a.p0 || topicAttempts(a.id).length - topicAttempts(b.id).length : metrics(b).risk - metrics(a).risk);
   document.querySelector("#attempt-topic").value = topics[0].id;
   document.querySelector("#attempt-dialog").showModal();
+});
+// Los diálogos nativos están en la capa superior: llevan su propia copia del reloj.
+document.querySelectorAll("dialog").forEach((dialog) => {
+  const clock = document.querySelector("#exam-clock").cloneNode(true);
+  clock.removeAttribute("id");
+  clock.className = "dialog-exam-clock";
+  dialog.prepend(clock);
 });
 renderDiceOptions(); renderDiceResult();
 fillTopicSelects(); renderAll(); showView(location.hash.slice(1)); setInterval(renderCountdown, 1000);
