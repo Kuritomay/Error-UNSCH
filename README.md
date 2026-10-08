@@ -19,7 +19,7 @@ El catálogo oficial está incluido en `app.js`. Los intentos, los errores y las
 
 La barra lateral muestra una vista a la vez y permite navegar directamente entre los cuatro apartados:
 
-- **Centro de mando:** campaña activa, métricas, siguiente acción y evidencia de dominio.
+- **Centro de mando:** dado y práctica mental al inicio, campaña activa, métricas, siguiente acción y evidencia de dominio.
 - **Microtemas:** catálogo oficial con filtros por tratamiento, curso y nivel K.
 - **Registro de fallos:** registro de intentos incorrectos, patrones reincidentes y bitácora de reparaciones.
 - **Estrategia:** resumen de tratamientos y recomendaciones basadas en la evidencia registrada.
@@ -41,7 +41,23 @@ En el centro de mando, **Lanzar dado** elige un curso con probabilidad ponderada
 
 La probabilidad es `peso del curso / suma de pesos seleccionados`. Con los 17 cursos activos, cada curso de prioridad muy alta tiene un 13,8% de probabilidad, cada alta un 6,9%, cada complementaria un 2,3% y cada selectiva un 1,1% (valores redondeados). Los pesos no son puntajes oficiales ni dependen del área académica.
 
-En **Cursos disponibles y probabilidades** puedes excluir cursos manteniendo al menos uno seleccionado. La selección y el último resultado se guardan en el dispositivo. El resultado permite abrir los microtemas del curso o registrar una práctica, con un microtema preseleccionado según la fase de campaña. RM utiliza el curso `RLM` del catálogo existente; Actualidad no participa al no tener una valoración indicada.
+En **Cursos disponibles y probabilidades** puedes excluir cursos manteniendo al menos uno seleccionado. La selección y el último resultado se guardan en el dispositivo. El resultado permite abrir los microtemas del curso o registrar un intento de examen, con un microtema preseleccionado según la fase de campaña. RM utiliza el curso `RLM` del catálogo existente; Actualidad no participa al no tener una valoración indicada.
+
+## Bases mentales: entender y ganar velocidad
+
+El dado está al inicio, con **Iniciar práctica** justo debajo. Cada lanzamiento abre una pregunta del curso elegido. Iniciar práctica permite seguir con el último curso disponible o sortear uno si todavía no hay selección.
+
+El banco local de `mental-questions.js` contiene **250 preguntas** para los 17 cursos: tablas del 6 al 9, porcentajes, MCD/MCM, ecuaciones, gráficas sencillas, geometría, razones trigonométricas, fuerzas y energía, etimología, gramática, cívica y bases de los otros cursos. Cada pregunta incluye respuesta, una explicación y **“Te sirve cuando…”**. Sus microtemas enlazan con el catálogo; la selección favorece las bases de temas profundos y herramientas como tablas, ángulos notables, raíces de palabras y gráficas elementales. “El 20%” es un criterio de utilidad, no un porcentaje demostrado de cobertura del examen.
+
+La interacción es de recuerdo activo: responde mentalmente, pulsa **Ver respuesta** y valora **No lo sabía**, **Me costó** o **Lo sabía rápido**. Puedes hacer otra del mismo curso o terminar. No hace falta escribir ni usar calculadora. Los valores trigonométricos exactos se distinguen de las aproximaciones escolares para 37° y 53°.
+
+`mental-practice.js` prioriza repasos vencidos y preguntas nuevas, evitando repetir inmediatamente una pregunta. Las olvidadas se repasan tras otras preguntas de la sesión o al vencer 2 minutos; las lentas, tras 10 minutos. Las recordadas con soltura progresan por intervalos de 1, 3, 7, 14 y 30 días. Los repasos se seleccionan dentro del curso elegido. El tiempo mostrado mide desde la presentación hasta descubrir la respuesta, incluido cualquier tiempo de pausa.
+
+La autoevaluación se guarda en `mentalProgress`, dentro del mismo almacenamiento local. Tiene progreso independiente de los intentos de examen y de la escala K. **Registrar intento de examen** conserva el formulario original para evidencias completas.
+
+### Comprobación del banco
+
+Sin dependencias adicionales, ejecuta `node --test tests/mental-questions.test.cjs`. Comprueba cobertura por curso, enlaces al catálogo, identificadores únicos, variantes numéricas y señalización de aproximaciones trigonométricas.
 
 ## Despliegue en Vercel
 

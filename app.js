@@ -65,13 +65,15 @@ function renderDiceResult() {
   document.querySelector("#dice-actions").hidden = !item;
   if (!item) return;
   document.querySelector("#dice-course").textContent = item.label || item.course;
-  document.querySelector("#dice-detail").textContent = `Prioridad ${item.priority.toLowerCase()} · ${item.points ? `${item.points} puntos por pregunta` : "Puntos por verificar"}. Probabilidad al lanzar: ${dicePercent(state.diceLastProbability ?? studyProbability(item))}. Empieza por un microtema y practica con una pregunta nueva.`;
+  document.querySelector("#dice-detail").textContent = `Prioridad ${item.priority.toLowerCase()} · ${item.points ? `${item.points} puntos por pregunta` : "Puntos por verificar"}. Probabilidad al lanzar: ${dicePercent(state.diceLastProbability ?? studyProbability(item))}. Una pregunta corta para ganar soltura.`;
 }
 function rollStudyDice() {
   const courses = availableStudyCourses();
   const die = document.querySelector("#roll-dice");
   if (die.disabled || !courses.length) return;
   die.disabled = true;
+  document.querySelector("#start-practice").disabled = true;
+  document.querySelector("#mental-practice").hidden = true;
   die.classList.add("rolling");
   document.querySelector("#dice-result").setAttribute("aria-busy", "true");
   document.querySelector("#dice-actions").hidden = true;
@@ -85,7 +87,9 @@ function rollStudyDice() {
     renderDiceResult();
     die.classList.remove("rolling");
     die.disabled = false;
+    document.querySelector("#start-practice").disabled = false;
     document.querySelector("#dice-result").removeAttribute("aria-busy");
+    document.dispatchEvent(new CustomEvent("study-course-selected", { detail: chosen.course }));
   }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 650);
 }
 

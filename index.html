@@ -36,6 +36,37 @@
           <div class="top-actions"><span class="storage-state"><i></i>Guardado en este dispositivo</span><button class="button secondary" id="attempt-button">Registrar intento</button></div>
         </header>
 
+        <section class="panel dice-panel" aria-labelledby="dice-title">
+          <div class="panel-heading"><div><p class="eyebrow">POCO, PERO MUY ÚTIL</p><h2 id="dice-title">Lo básico, a toda velocidad.</h2></div></div>
+          <p class="panel-intro">Entenderlo primero. Recordarlo sin esfuerzo después. Lanza el dado y resuelve una pregunta mental.</p>
+          <div class="dice-main">
+            <div class="dice-control">
+              <button class="study-die" id="roll-dice" aria-label="Lanzar dado y practicar un curso"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="8" y="8" width="84" height="84" rx="18"/><g><circle cx="29" cy="29" r="6"/><circle cx="71" cy="29" r="6"/><circle cx="29" cy="50" r="6"/><circle cx="71" cy="50" r="6"/><circle cx="29" cy="71" r="6"/><circle cx="71" cy="71" r="6"/></g></svg><span>Lanzar dado</span></button>
+              <button class="button primary" id="start-practice">Iniciar práctica</button>
+            </div>
+            <div class="dice-result" id="dice-result" role="status" aria-live="polite" aria-atomic="true"><p class="eyebrow">TU PRÓXIMO CURSO</p><h3 id="dice-course">Una base pequeña.<br />Muchos problemas más fáciles.</h3><p id="dice-detail">El dado elige con prioridad. Tú ganas soltura practicando.</p></div>
+          </div>
+
+          <section class="mental-practice" id="mental-practice" hidden aria-labelledby="mental-question">
+            <div class="mental-meta"><span id="mental-topic"></span><span id="mental-kind"></span></div>
+            <h3 id="mental-question" tabindex="-1"></h3>
+            <p class="mental-instruction">Responde en tu cabeza antes de descubrir la solución. Sin calculadora.</p>
+            <button class="button primary" id="reveal-answer">Ver respuesta</button>
+            <div class="mental-solution" id="mental-solution" hidden>
+              <p class="eyebrow">LA RESPUESTA</p><p class="mental-answer" id="mental-answer"></p>
+              <p id="mental-explanation"></p><p class="mental-use"><b>Te sirve cuando…</b> <span id="mental-use"></span></p>
+              <p class="mental-instruction" id="mental-rating-label">¿Cómo te salió? Tu valoración organiza el próximo repaso.</p>
+              <div class="mental-ratings" role="group" aria-labelledby="mental-rating-label"><button class="button secondary" data-recall="again">No lo sabía</button><button class="button secondary" data-recall="slow">Me costó</button><button class="button secondary" data-recall="easy">Lo sabía rápido</button></div>
+            </div>
+            <p class="mental-feedback" id="mental-feedback" role="status"></p>
+            <div class="mental-next" id="mental-next" hidden><button class="button primary" id="next-question">Otra del mismo curso</button><button class="button secondary" id="finish-practice">Terminar práctica</button></div>
+          </section>
+
+          <p class="mental-progress" id="mental-progress"></p>
+          <div class="dice-actions" id="dice-actions" hidden><button class="text-button" id="dice-topics">Ver microtemas del curso</button><button class="text-button" id="dice-attempt">Registrar intento de examen</button></div>
+          <details class="dice-settings"><summary>Cursos disponibles y probabilidades</summary><p class="panel-intro">Marca los cursos que puedes estudiar ahora. Sus probabilidades se recalculan automáticamente.</p><div class="dice-options" id="dice-options"></div><p class="dice-note">Pesos de estudio: muy alta 6 · alta 3 · complementaria 1 · selectiva 0,5. Son pesos relativos, no puntos del examen. RM corresponde a RLM en el catálogo. Actualidad no participa porque no tiene valoración indicada.</p></details>
+        </section>
+
         <section class="mission" aria-labelledby="phase-title">
           <div class="mission-copy"><p class="eyebrow inverse">MISIÓN ACTIVA · 20 → 10 → 20</p><h2 id="phase-title">Cargando campaña…</h2><p id="phase-objective"></p><div class="phase-progress" aria-label="Progreso de fases"><span id="build-progress">CONSTRUIR</span><i></i><span id="break-progress">ROMPER</span><i></i><span id="repair-progress">REPARAR</span></div></div>
           <div class="countdown-main"><span>TIEMPO RESTANTE</span><strong id="countdown-full" aria-live="polite"><span id="countdown-primary">--d --h --m</span><span class="countdown-seconds" id="countdown-seconds">--s</span></strong><p>El objetivo no es evitar fallar.<br />Es fallar con tiempo para corregir.</p></div>
@@ -53,18 +84,6 @@
         <div class="decision-grid">
           <section class="panel next-panel" aria-labelledby="next-title"><div class="panel-heading"><div><p class="eyebrow">DECISIÓN DE HOY</p><h2 id="next-title">Siguiente acción</h2></div><span class="formula" id="decision-formula">P0 = H × I × U</span></div><p class="panel-intro" id="decision-explanation"></p><ol class="action-list" id="action-list"></ol><button class="button secondary" id="view-strategy">Ver por qué se priorizó</button></section>
         </div>
-
-        <section class="panel dice-panel" aria-labelledby="dice-title">
-          <div class="panel-heading"><div><p class="eyebrow">AZAR CON PRIORIDAD</p><h2 id="dice-title">¿Qué curso estudio ahora?</h2></div><span class="formula">P = peso / total</span></div>
-          <p class="panel-intro">Lanza el dado cuando necesites decidir. Los cursos de mayor prioridad tienen más oportunidades de salir; cada lanzamiento es independiente y puede repetir curso.</p>
-          <div class="dice-main">
-            <button class="study-die" id="roll-dice" aria-label="Lanzar dado para elegir un curso"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="8" y="8" width="84" height="84" rx="18"/><g><circle cx="29" cy="29" r="6"/><circle cx="71" cy="29" r="6"/><circle cx="29" cy="50" r="6"/><circle cx="71" cy="50" r="6"/><circle cx="29" cy="71" r="6"/><circle cx="71" cy="71" r="6"/></g></svg><span>Lanzar dado</span></button>
-            <div class="dice-result" id="dice-result" role="status" aria-live="polite" aria-atomic="true"><p class="eyebrow">TU PRÓXIMA SESIÓN</p><h3 id="dice-course">El dado decide, tú avanzas.</h3><p id="dice-detail">Pulsa el dado para descubrir qué curso estudiar.</p></div>
-          </div>
-          <div class="dice-actions" id="dice-actions" hidden><button class="button secondary" id="dice-topics">Ver microtemas del curso</button><button class="button primary" id="dice-attempt">Registrar práctica</button></div>
-          <details class="dice-settings"><summary>Cursos disponibles y probabilidades</summary><p class="panel-intro">Marca los cursos que puedes estudiar ahora. La probabilidad se recalcula entre los seleccionados y tu selección queda guardada en este dispositivo.</p><div class="dice-options" id="dice-options"></div></details>
-          <p class="dice-note">Pesos de estudio: muy alta 6 · alta 3 · complementaria 1 · selectiva 0,5. Son pesos relativos propuestos, no puntos del examen. RM corresponde a RLM en el catálogo. Actualidad no participa porque no tiene valoración indicada.</p>
-        </section>
 
         <section class="panel evidence-panel" aria-labelledby="evidence-title"><div class="panel-heading"><div><p class="eyebrow">ESCALA K · NO ES AUTOEVALUACIÓN</p><h2 id="evidence-title">Evidencia de dominio</h2></div><button class="text-button" id="show-k-rules">Ver criterios K1–K5</button></div><div class="k-scale"><div><b>K0</b><span>Desconocido</span><small>Sin evidencia</small></div><div><b>K1</b><span>Comprensión</span><small>Primer intento</small></div><div><b>K2</b><span>Reconocimiento</span><small>2 intentos</small></div><div class="target"><b>K3</b><span>Aplicación</span><small>≥70% nuevo</small></div><div><b>K4</b><span>Transferencia</span><small>Mezclado ≥80%</small></div><div><b>K5</b><span>Automático</span><small>Tiempo + 72 h</small></div></div></section>
 
@@ -89,6 +108,8 @@
     <dialog id="plan-dialog"><form id="plan-form"><div class="dialog-title"><div><p class="eyebrow">CAMPAÑA 20 → 10 → 20</p><h2>Configurar fechas</h2></div><button type="button" class="close" data-close="plan-dialog" aria-label="Cerrar">×</button></div><p class="dialog-copy">El examen es fijo: 22 de noviembre de 2026. El ciclo principal ocupa 50 días y deja el tramo final para simulacros y recuperación.</p><label>Inicio de la campaña<input id="campaign-start" type="date" required /></label><div class="plan-calendar"><span>Construir<br /><b>20 días</b></span><span>Romper<br /><b>10 días</b></span><span>Reparar<br /><b>20 días</b></span><span>Final<br /><b>simulacros</b></span></div><div class="dialog-actions"><button type="button" class="button secondary" data-close="plan-dialog">Cancelar</button><button class="button primary" type="submit">Guardar campaña</button></div></form></dialog>
 
     <dialog id="k-dialog"><div class="dialog-title"><div><p class="eyebrow">REGLAS DE EVIDENCIA</p><h2>Cómo se asigna K</h2></div><button class="close" data-close="k-dialog" aria-label="Cerrar">×</button></div><div class="rules"><p><b>K1 · comprensión:</b> existe al menos un intento registrado.</p><p><b>K2 · reconocimiento:</b> al menos dos intentos.</p><p><b>K3 · aplicación:</b> dos preguntas nuevas y precisión nueva ≥70%.</p><p><b>K4 · transferencia:</b> cuatro nuevas/mezcladas y precisión ≥80%.</p><p><b>K5 · automático:</b> K4, retención 72 h ≥85%, tiempo ≤90 s y sin fallo reincidente.</p></div></dialog>
+    <script src="mental-questions.js"></script>
     <script src="app.js"></script>
+    <script src="mental-practice.js"></script>
   </body>
 </html>
