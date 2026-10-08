@@ -33,6 +33,62 @@ function scoreFor(priority) { return priority === "S" ? { h: 5, i: 5, u: 4 } : p
 function treatmentFor(priority) { return priority === "S" ? "deep" : priority === "A" ? "surface" : "deferred"; }
 const catalog = Object.entries(officialCatalog).flatMap(([course, names]) => names.split(",").map((name) => { const priority = priorityFor(name); const s = scoreFor(priority); return { id: `${slug(course)}-${slug(name)}`, course, name, priority, treatment: treatmentFor(priority), ...s, p0: s.h * s.i * s.u }; }));
 
+const studyCourses = [
+  { course: "RLM", label: "Razonamiento Matemático (RM)", priority: "Muy alta", weight: 6, points: 18 },
+  { course: "Razonamiento verbal", label: "Razonamiento Verbal (RV)", priority: "Muy alta", weight: 6, points: 18 },
+  { course: "Aritmética", priority: "Muy alta", weight: 6, points: 18 },
+  { course: "Física", priority: "Muy alta", weight: 6, points: 18 },
+  ...["Álgebra", "Geometría", "Trigonometría", "Cívica"].map((course) => ({ course, priority: "Alta", weight: 3 })),
+  ...["Lenguaje", "Literatura", "Economía", "Geografía", "Historia del Perú", "Historia Universal"].map((course) => ({ course, priority: "Complementaria", weight: 1 })),
+  ...["Química", "Biología", "Anatomía"].map((course) => ({ course, priority: "Selectiva", weight: .5 }))
+];
+
+function availableStudyCourses() { return studyCourses.filter((item) => !(state.diceExcluded || []).includes(item.course)); }
+function weightedCourse(courses, random = Math.random()) {
+  const total = courses.reduce((sum, item) => sum + item.weight, 0);
+  if (!total) return null;
+  let target = random * total;
+  for (const item of courses) { target -= item.weight; if (target < 0) return item; }
+  return courses[courses.length - 1];
+}
+function studyProbability(item, courses = availableStudyCourses()) {
+  const total = courses.reduce((sum, course) => sum + course.weight, 0);
+  return total && courses.some((course) => course.course === item.course) ? item.weight / total : 0;
+}
+function dicePercent(value) { return `${(value * 100).toLocaleString("es-PE", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`; }
+function renderDiceOptions() {
+  const courses = availableStudyCourses();
+  document.querySelector("#dice-options").innerHTML = studyCourses.map((item) => `<label class="dice-option"><input type="checkbox" value="${item.course}" ${courses.includes(item) ? "checked" : ""}/><span><b>${item.label || item.course}</b><small>${item.priority} · ${item.points ? `${item.points} puntos por pregunta` : "Puntos por verificar"}</small></span><strong>${dicePercent(studyProbability(item, courses))}</strong></label>`).join("");
+}
+function renderDiceResult() {
+  const item = studyCourses.find((course) => course.course === state.diceLastCourse);
+  document.querySelector("#dice-actions").hidden = !item;
+  if (!item) return;
+  document.querySelector("#dice-course").textContent = item.label || item.course;
+  document.querySelector("#dice-detail").textContent = `Prioridad ${item.priority.toLowerCase()} · ${item.points ? `${item.points} puntos por pregunta` : "Puntos por verificar"}. Probabilidad al lanzar: ${dicePercent(state.diceLastProbability ?? studyProbability(item))}. Empieza por un microtema y practica con una pregunta nueva.`;
+}
+function rollStudyDice() {
+  const courses = availableStudyCourses();
+  const die = document.querySelector("#roll-dice");
+  if (die.disabled || !courses.length) return;
+  die.disabled = true;
+  die.classList.add("rolling");
+  document.querySelector("#dice-result").setAttribute("aria-busy", "true");
+  document.querySelector("#dice-actions").hidden = true;
+  document.querySelector("#dice-course").textContent = "Eligiendo tu próximo curso…";
+  document.querySelector("#dice-detail").textContent = "El dado está en movimiento.";
+  const chosen = weightedCourse(courses);
+  window.setTimeout(() => {
+    state.diceLastCourse = chosen.course;
+    state.diceLastProbability = studyProbability(chosen, courses);
+    saveState();
+    renderDiceResult();
+    die.classList.remove("rolling");
+    die.disabled = false;
+    document.querySelector("#dice-result").removeAttribute("aria-busy");
+  }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 650);
+}
+
 function loadState() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { startDate: START_DATE, area: "science", attempts: [], recommendationsAccepted: [] }; } catch { return { startDate: START_DATE, area: "science", attempts: [], recommendationsAccepted: [] }; } }
 let state = loadState();
 function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
@@ -84,4 +140,43 @@ document.querySelector("#accept-recommendations").addEventListener("click", () =
 document.querySelector("#plan-button").addEventListener("click", () => { document.querySelector("#campaign-start").value = state.startDate; document.querySelector("#plan-dialog").showModal(); });
 document.querySelector("#plan-form").addEventListener("submit", (event) => { event.preventDefault(); state.startDate = document.querySelector("#campaign-start").value; saveState(); document.querySelector("#plan-dialog").close(); renderAll(); });
 document.querySelector("#show-k-rules").addEventListener("click", () => document.querySelector("#k-dialog").showModal());
+document.querySelector("#roll-dice").addEventListener("click", rollStudyDice);
+document.querySelector("#dice-options").addEventListener("change", (event) => {
+  const input = event.target;
+  if (!input.matches('input[type="checkbox"]')) return;
+  if (!input.checked && availableStudyCourses().length === 1) {
+    input.checked = true;
+    input.setCustomValidity("Mantén al menos un curso seleccionado para lanzar el dado.");
+    input.reportValidity();
+    input.setCustomValidity("");
+    return;
+  }
+  const excluded = new Set(state.diceExcluded || []);
+  if (input.checked) excluded.delete(input.value); else excluded.add(input.value);
+  state.diceExcluded = [...excluded];
+  saveState();
+  const courses = availableStudyCourses();
+  document.querySelectorAll(".dice-option").forEach((option) => {
+    const item = studyCourses.find((course) => course.course === option.querySelector("input").value);
+    option.querySelector("strong").textContent = dicePercent(studyProbability(item, courses));
+  });
+});
+document.querySelector("#dice-topics").addEventListener("click", () => {
+  activeCourse = state.diceLastCourse;
+  activeTreatment = "all";
+  activeK = "all";
+  document.querySelector("#course-filter").value = activeCourse;
+  document.querySelector("#k-filter").value = "all";
+  document.querySelectorAll(".filter").forEach((button) => button.classList.toggle("active", button.dataset.treatment === "all"));
+  renderTopics();
+  location.hash = "microtemas";
+});
+document.querySelector("#dice-attempt").addEventListener("click", () => {
+  const phase = phaseInfo();
+  const topics = catalog.filter((topic) => topic.course === state.diceLastCourse);
+  topics.sort((a, b) => phase.id === "build" ? b.p0 - a.p0 || topicAttempts(a.id).length - topicAttempts(b.id).length : metrics(b).risk - metrics(a).risk);
+  document.querySelector("#attempt-topic").value = topics[0].id;
+  document.querySelector("#attempt-dialog").showModal();
+});
+renderDiceOptions(); renderDiceResult();
 fillTopicSelects(); renderAll(); showView(location.hash.slice(1)); setInterval(renderCountdown, 1000);

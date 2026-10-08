@@ -28,6 +28,21 @@ Cada apartado puede abrirse mediante su fragmento de URL: `#inicio`, `#microtema
 
 La cuenta regresiva principal presenta días, horas, minutos y segundos con el mismo tamaño; los segundos se resaltan en rojo. El sitio utiliza `favicon.svg`, un icono propio basado en el símbolo de UNSCH Control.
 
+## Dado de estudio
+
+En el centro de mando, **Lanzar dado** elige un curso con probabilidad ponderada. Cada lanzamiento es independiente y puede repetir resultado. Los pesos relativos propuestos son:
+
+| Prioridad | Cursos | Peso por curso | Puntos por pregunta |
+| --- | --- | --- | --- |
+| Muy alta | RM, RV, Aritmética, Física | 6 | 18 |
+| Alta | Álgebra, Geometría, Trigonometría, Cívica | 3 | Por verificar |
+| Complementaria | Lenguaje, Literatura, Economía, Geografía, Historia del Perú, Historia Universal | 1 | Por verificar |
+| Selectiva | Química, Biología, Anatomía | 0,5 | Por verificar |
+
+La probabilidad es `peso del curso / suma de pesos seleccionados`. Con los 17 cursos activos, cada curso de prioridad muy alta tiene un 13,8% de probabilidad, cada alta un 6,9%, cada complementaria un 2,3% y cada selectiva un 1,1% (valores redondeados). Los pesos no son puntajes oficiales ni dependen del área académica.
+
+En **Cursos disponibles y probabilidades** puedes excluir cursos manteniendo al menos uno seleccionado. La selección y el último resultado se guardan en el dispositivo. El resultado permite abrir los microtemas del curso o registrar una práctica, con un microtema preseleccionado según la fase de campaña. RM utiliza el curso `RLM` del catálogo existente; Actualidad no participa al no tener una valoración indicada.
+
 ## Despliegue en Vercel
 
 1. Sube esta carpeta a un repositorio de GitHub.
