@@ -40,8 +40,14 @@ const studyCourses = [
   { course: "Física", priority: "Muy alta", weight: 6, points: 18 },
   ...["Álgebra", "Geometría", "Trigonometría", "Cívica"].map((course) => ({ course, priority: "Alta", weight: 3 })),
   ...["Lenguaje", "Literatura", "Economía", "Geografía", "Historia del Perú", "Historia Universal"].map((course) => ({ course, priority: "Complementaria", weight: 1 })),
+  { course: "Actualidad", priority: "Complementaria", weight: 1, proposed: true },
   ...["Química", "Biología", "Anatomía"].map((course) => ({ course, priority: "Selectiva", weight: .5 }))
 ];
+const mentalBankTopicCounts = new Map();
+mentalQuestionBank.forEach((question) => {
+  const key = `${question.course}|${question.topic}`;
+  mentalBankTopicCounts.set(key, (mentalBankTopicCounts.get(key) || 0) + 1);
+});
 
 function availableStudyCourses() { return studyCourses.filter((item) => !(state.diceExcluded || []).includes(item.course)); }
 function weightedCourse(courses, random = Math.random()) {
@@ -58,7 +64,7 @@ function studyProbability(item, courses = availableStudyCourses()) {
 function dicePercent(value) { return `${(value * 100).toLocaleString("es-PE", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`; }
 function renderDiceOptions() {
   const courses = availableStudyCourses();
-  document.querySelector("#dice-options").innerHTML = studyCourses.map((item) => `<label class="dice-option"><input type="checkbox" value="${item.course}" ${courses.includes(item) ? "checked" : ""}/><span><b>${item.label || item.course}</b><small>${item.priority} · ${item.points ? `${item.points} puntos por pregunta` : "Puntos por verificar"}</small></span><strong>${dicePercent(studyProbability(item, courses))}</strong></label>`).join("");
+  document.querySelector("#dice-options").innerHTML = studyCourses.map((item) => `<label class="dice-option"><input type="checkbox" value="${item.course}" ${courses.includes(item) ? "checked" : ""}/><span><b>${item.label || item.course}</b><small>${item.priority}${item.proposed ? " (peso propuesto)" : ""} · ${item.points ? `${item.points} puntos por pregunta` : "Puntos por verificar"}</small></span><strong>${dicePercent(studyProbability(item, courses))}</strong></label>`).join("");
 }
 function renderDiceResult() {
   const item = studyCourses.find((course) => course.course === state.diceLastCourse);
@@ -126,7 +132,11 @@ function renderDecision() { const phase = phaseInfo(); const action = recommende
 let activeTreatment = "all"; let activeCourse = "all"; let activeK = "all";
 function renderTopics() {
   const rows = catalog.map((topic) => ({ topic, m: metrics(topic) })).filter(({ topic, m }) => (activeTreatment === "all" || topic.treatment === activeTreatment || (activeTreatment === "risk" && m.risk >= 60 && m.attempts.length)) && (activeCourse === "all" || topic.course === activeCourse) && (activeK === "all" || m.k === activeK));
-  document.querySelector("#topics-body").innerHTML = rows.map(({ topic, m }) => `<tr><td><b>${topic.name}</b><small>${topic.course}</small></td><td><span class="treatment ${topic.treatment}">${treatmentLabel(topic.treatment)}</span></td><td data-label="Prioridad P0">${topic.p0}</td><td data-label="Nivel K">${m.k}</td><td data-label="Nuevas">${percent(m.freshRate)}</td><td data-label="Retención 72 h">${percent(m.retentionRate)}</td><td data-label="Tiempo">${formatTime(m.time)}</td><td data-label="Fallos">${m.errors.length}</td><td data-label="Riesgo" class="${m.risk >= 60 && m.attempts.length ? "risk-high" : m.risk >= 35 && m.attempts.length ? "risk-medium" : ""}">${m.attempts.length ? m.risk : "—"}</td></tr>`).join("") || '<tr><td colspan="9">No hay microtemas que coincidan con los filtros.</td></tr>';
+  document.querySelector("#topics-body").innerHTML = rows.map(({ topic, m }) => {
+    const count = mentalBankTopicCounts.get(`${topic.course}|${topic.name}`) || 0;
+    const practice = count ? `<button class="topic-practice" data-practice-topic="${topic.id}" aria-label="Practicar ${escapeHtml(topic.course)}: ${escapeHtml(topic.name)}, ${count} preguntas">Practicar · ${count}</button>` : "";
+    return `<tr><td><div class="topic-heading"><b>${topic.name}</b>${practice}</div><small>${topic.course}</small></td><td><span class="treatment ${topic.treatment}">${treatmentLabel(topic.treatment)}</span></td><td data-label="Prioridad P0">${topic.p0}</td><td data-label="Nivel K">${m.k}</td><td data-label="Nuevas">${percent(m.freshRate)}</td><td data-label="Retención 72 h">${percent(m.retentionRate)}</td><td data-label="Tiempo">${formatTime(m.time)}</td><td data-label="Fallos">${m.errors.length}</td><td data-label="Riesgo" class="${m.risk >= 60 && m.attempts.length ? "risk-high" : m.risk >= 35 && m.attempts.length ? "risk-medium" : ""}">${m.attempts.length ? m.risk : "—"}</td></tr>`;
+  }).join("") || '<tr><td colspan="9">No hay microtemas que coincidan con los filtros.</td></tr>';
 }
 function renderLedger() { const errors = state.attempts.filter((attempt) => !attempt.correct).slice(-6).reverse(); document.querySelector("#ledger-list").innerHTML = errors.length ? errors.map((error) => { const topic = catalog.find((item) => item.id === error.topicId); return `<article class="ledger-entry"><div><b>${topic.course} · ${topic.name}</b><small>${escapeHtml(error.source)}</small></div><div class="ledger-failure"><b>${errorLabel(error.errorType)}</b><small>${formatTime(error.seconds)} · ${error.isNew ? "Nueva" : "Repetida"}</small></div><div class="ledger-correction">“${escapeHtml(error.correction)}”</div><time>${new Date(error.date).toLocaleDateString("es-PE", { day: "2-digit", month: "short" })}</time></article>`; }).join("") : '<p class="empty-ledger">Todavía no hay fallos guardados. El primer registro debe incluir el patrón que no viste y una corrección mínima verificable.</p>'; }
 function errorLabel(type) { return ({ recognition: "No reconocí el modelo", concept: "Olvidé concepto", "wrong-model": "Modelo equivocado", procedure: "Procedimiento", calculation: "Cálculo", reading: "Lectura", time: "Tiempo", distractor: "Distractor" })[type] || "Fallo"; }

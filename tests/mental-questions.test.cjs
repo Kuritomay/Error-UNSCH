@@ -7,6 +7,7 @@ const root = path.join(__dirname, "..");
 const context = vm.createContext({});
 const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
 vm.runInContext(fs.readFileSync(path.join(root, "mental-questions.js"), "utf8"), context);
+vm.runInContext(fs.readFileSync(path.join(root, "mental-questions-extra.js"), "utf8"), context);
 // Carga solo el catálogo y las definiciones; el arranque de la UI no es necesario.
 vm.runInContext(app.slice(0, app.indexOf("function loadState()")), context);
 const bank = vm.runInContext("mentalQuestionBank", context);
@@ -14,13 +15,29 @@ const catalog = vm.runInContext("catalog", context);
 const courses = vm.runInContext("studyCourses", context);
 
 test("el banco cubre todos los cursos y enlaza con microtemas reales", () => {
-  assert.ok(bank.length >= 200);
+  assert.ok(bank.length >= 600);
   assert.equal(new Set(bank.map((question) => question.id)).size, bank.length);
-  for (const item of courses) assert.ok(bank.filter((question) => question.course === item.course).length >= 6, item.course);
+  for (const item of courses) assert.ok(bank.filter((question) => question.course === item.course).length >= 16, item.course);
   for (const question of bank) {
     assert.ok(courses.some((item) => item.course === question.course), question.id);
     assert.ok(catalog.some((topic) => topic.course === question.course && topic.name === question.topic), question.id);
     for (const key of ["prompt", "answer", "explanation", "use"]) assert.ok(typeof question[key] === "string" && question[key].trim(), `${question.id}: ${key}`);
+  }
+});
+
+test("cada microtema profundo y cada bloque de RV tienen preguntas de práctica", () => {
+  for (const topic of catalog.filter((topic) => topic.treatment === "deep")) {
+    assert.ok(bank.filter((question) => question.course === topic.course && question.topic === topic.name).length >= 3, `${topic.course}: ${topic.name}`);
+  }
+  const rvTopics = catalog.filter((topic) => topic.course === "Razonamiento verbal");
+  assert.ok(bank.filter((question) => question.course === "Razonamiento verbal").length >= 100);
+  for (const topic of rvTopics) assert.ok(bank.filter((question) => question.course === topic.course && question.topic === topic.name).length >= 2, topic.name);
+});
+
+test("Historia pregunta hechos y relaciones, no fechas de memoria", () => {
+  for (const question of bank.filter((question) => question.course.startsWith("Historia"))) {
+    assert.doesNotMatch(question.prompt, /(?:en qué|qué)\s+(?:año|fecha|día|mes)|cuándo\s+(?:comenzó|ocurrió|se libró)/i);
+    assert.doesNotMatch(question.answer.trim(), /^\d{4}$/);
   }
 });
 

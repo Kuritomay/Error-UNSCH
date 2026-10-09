@@ -40,12 +40,14 @@ En el centro de mando, **Lanzar dado** elige un curso con probabilidad ponderada
 | --- | --- | --- | --- |
 | Muy alta | RM, RV, Aritmética, Física | 6 | 18 |
 | Alta | Álgebra, Geometría, Trigonometría, Cívica | 3 | Por verificar |
-| Complementaria | Lenguaje, Literatura, Economía, Geografía, Historia del Perú, Historia Universal | 1 | Por verificar |
+| Complementaria | Lenguaje, Literatura, Economía, Geografía, Historia del Perú, Historia Universal y Actualidad* | 1 | Por verificar |
 | Selectiva | Química, Biología, Anatomía | 0,5 | Por verificar |
 
-La probabilidad es `peso del curso / suma de pesos seleccionados`. Con los 17 cursos activos, cada curso de prioridad muy alta tiene un 13,8% de probabilidad, cada alta un 6,9%, cada complementaria un 2,3% y cada selectiva un 1,1% (valores redondeados). Los pesos no son puntajes oficiales ni dependen del área académica.
+La probabilidad es `peso del curso / suma de pesos seleccionados`. Con los 18 cursos activos, cada curso de prioridad muy alta tiene un 13,5% de probabilidad, cada alta un 6,7%, cada complementaria un 2,2% y cada selectiva un 1,1% (valores redondeados). Los pesos no son puntajes oficiales ni dependen del área académica.
 
-En **Cursos disponibles y probabilidades** puedes excluir cursos manteniendo al menos uno seleccionado. La selección y el último resultado se guardan en el dispositivo. El resultado permite abrir los microtemas del curso o registrar un intento de examen, con un microtema preseleccionado según la fase de campaña. RM utiliza el curso `RLM` del catálogo existente; Actualidad no participa al no tener una valoración indicada.
+**Actualidad:** utiliza un peso complementario propuesto para incluir todos los cursos del catálogo.
+
+En **Cursos disponibles y probabilidades** puedes excluir cursos manteniendo al menos uno seleccionado. La selección y el último resultado se guardan en el dispositivo. El resultado permite abrir los microtemas del curso o registrar un intento de examen, con un microtema preseleccionado según la fase de campaña. RM utiliza el curso `RLM` del catálogo existente.
 
 ## Bases mentales: entender y ganar velocidad
 
@@ -55,11 +57,15 @@ La práctica abre **Modo enfoque**, una ventana nativa dentro de la misma web: m
 
 **Probar otro curso** sortea entre los cursos disponibles distintos al actual, manteniendo sus pesos relativos; si solo hay un curso disponible, continúa en él. La pregunta y la selección del panel quedan sincronizadas.
 
-El banco local de `mental-questions.js` contiene **250 preguntas** para los 17 cursos: tablas del 6 al 9, porcentajes, MCD/MCM, ecuaciones, gráficas sencillas, geometría, razones trigonométricas, fuerzas y energía, etimología, gramática, cívica y bases de los otros cursos. Cada pregunta incluye respuesta, una explicación y **“Te sirve cuando…”**. Sus microtemas enlazan con el catálogo; la selección favorece las bases de temas profundos y herramientas como tablas, ángulos notables, raíces de palabras y gráficas elementales. “El 20%” es un criterio de utilidad, no un porcentaje demostrado de cobertura del examen.
+El banco local de `mental-questions.js` y `mental-questions-extra.js` contiene **623 preguntas para los 18 cursos**, incluidas **117 de RV**: tablas del 6 al 9, porcentajes, MCD/MCM, ecuaciones, gráficas sencillas, geometría, razones trigonométricas, fuerzas y energía, etimología, lectura, gramática, cívica y bases de los otros cursos. Cada pregunta incluye respuesta, una explicación y **“Te sirve cuando…”**. La selección favorece las bases de temas profundos y herramientas reutilizables. “El 20%” es un criterio de utilidad, no un porcentaje demostrado de cobertura del examen.
 
-La interacción es de recuerdo activo: responde mentalmente, pulsa **Ver respuesta** y valora **No lo sabía**, **Me costó** o **Lo sabía rápido**. Puedes hacer otra del mismo curso o terminar. No hace falta escribir ni usar calculadora. Los valores trigonométricos exactos se distinguen de las aproximaciones escolares para 37° y 53°.
+Se consultó el temario oficial UNSCH 2027-I y referencias conceptuales de RAE/ASALE, OpenStax y Britannica; véase [FUENTES.md](FUENTES.md). Las preguntas son originales de práctica, no ítems oficiales de examen. Todos los **42 microtemas profundos** del plan tienen al menos tres preguntas, y los **36 microtemas de RV** al menos dos. En Historia se trabajan hechos, causas, consecuencias y contexto en lugar de preguntar fechas directas.
 
-Las preguntas se presentan en tarjetas con icono y acento de color por familia de cursos, enunciado destacado y una guía visual de tres pasos: **Piensa → Descubre → Refuerza**. La solución separa la respuesta, la idea clave y su uso en el examen; los botones de recuerdo incluyen iconos y etiquetas de texto.
+El catálogo muestra **Practicar · cantidad** en cada microtema con preguntas. Dentro de Modo enfoque, **Qué quieres repasar** permite elegir todos los temas del curso, solo los profundos o un microtema concreto. Se conserva ese filtro al continuar con otra pregunta del mismo curso.
+
+La interacción es de recuerdo activo: responde mentalmente, pulsa **Ver respuesta** y valora **No sabía**, **Difícil** o **Lo sabía rápido**. El botón para descubrir la respuesta y los tres botones de valoración están en una **barra fija inferior, como en Anki**; solo se desplaza el panel de la pregunta y su explicación. Tras valorar, esa barra permite continuar o terminar. En PC, Espacio descubre la respuesta cuando el foco no está en un control, y 1/2/3 valoran el recuerdo. No hace falta escribir ni usar calculadora. Los valores trigonométricos exactos se distinguen de las aproximaciones escolares para 37° y 53°.
+
+Las preguntas se presentan en tarjetas con icono y acento de color por familia de cursos, enunciado destacado y una guía visual de tres pasos: **Piensa → Descubre → Refuerza**. La solución separa la respuesta, la idea clave y su uso en el examen; los botones de recuerdo se distinguen por etiquetas, colores y atajos de teclado.
 
 `mental-practice.js` prioriza repasos vencidos y preguntas nuevas, evitando repetir inmediatamente una pregunta. Las olvidadas se repasan tras otras preguntas de la sesión o al vencer 2 minutos; las lentas, tras 10 minutos. Las recordadas con soltura progresan por intervalos de 1, 3, 7, 14 y 30 días. Los repasos se seleccionan dentro del curso elegido. El tiempo mostrado mide desde la presentación hasta descubrir la respuesta, incluido cualquier tiempo de pausa.
 
@@ -67,7 +73,7 @@ La autoevaluación se guarda en `mentalProgress`, dentro del mismo almacenamient
 
 ### Comprobación del banco
 
-Sin dependencias adicionales, ejecuta `node --test tests/mental-questions.test.cjs`. Comprueba cobertura por curso, enlaces al catálogo, identificadores únicos, variantes numéricas y señalización de aproximaciones trigonométricas.
+Sin dependencias adicionales, ejecuta `node --test tests/mental-questions.test.cjs`. Comprueba cobertura por curso y por tema profundo/RV, enlaces al catálogo, identificadores únicos, variantes numéricas, ausencia de preguntas de fechas directas y señalización de aproximaciones trigonométricas.
 
 ## Despliegue en Vercel
 

@@ -72,11 +72,11 @@
           </div>
 
           <div class="dice-actions" id="dice-actions" hidden><button class="text-button" id="dice-topics">Ver microtemas del curso</button><button class="text-button" id="dice-attempt">Registrar intento de examen</button></div>
-          <details class="dice-settings"><summary>Cursos disponibles y probabilidades</summary><p class="panel-intro">Marca los cursos que puedes estudiar ahora. Sus probabilidades se recalculan automáticamente.</p><div class="dice-options" id="dice-options"></div><p class="dice-note">Pesos de estudio: muy alta 6 · alta 3 · complementaria 1 · selectiva 0,5. Son pesos relativos, no puntos del examen. RM corresponde a RLM en el catálogo. Actualidad no participa porque no tiene valoración indicada.</p></details>
+          <details class="dice-settings"><summary>Cursos disponibles y probabilidades</summary><p class="panel-intro">Marca los cursos que puedes estudiar ahora. Sus probabilidades se recalculan automáticamente.</p><div class="dice-options" id="dice-options"></div><p class="dice-note">Pesos de estudio: muy alta 6 · alta 3 · complementaria 1 · selectiva 0,5. Son pesos relativos, no puntos del examen. RM corresponde a RLM en el catálogo. Actualidad usa un peso complementario propuesto.</p></details>
         </section>
 
         <section class="panel deadline-panel" aria-labelledby="deadline-title"><div class="panel-heading"><div><p class="eyebrow">EL GRAN OBJETIVO</p><h2 id="deadline-title">Nos vemos en la UNSCH.</h2></div><span class="card-tag">22 nov</span></div><div class="countdown-main"><span>TIEMPO HASTA EL EXAMEN</span><strong id="countdown-full" role="timer" aria-live="off"><span id="countdown-primary">--d --h --m</span><span class="countdown-seconds" id="countdown-seconds">--s</span></strong></div><p class="deadline-caption">Hoy tienes tiempo para convertir un fallo en una ventaja.</p></section>
-        <section class="panel memory-panel" aria-labelledby="memory-title"><div class="panel-heading"><div><p class="eyebrow">TU CAJA DE HERRAMIENTAS</p><h2 id="memory-title">Cada base cuenta.</h2></div><div class="memory-ring" id="memory-ring"><span id="memory-percent">0%</span></div></div><div class="memory-stats"><div><strong id="memory-total">250</strong><span>preguntas</span></div><div><strong id="memory-seen">0</strong><span>exploradas</span></div><div><strong id="memory-due">0</strong><span>por repasar</span></div></div><p class="mental-progress" id="mental-progress"></p></section>
+        <section class="panel memory-panel" aria-labelledby="memory-title"><div class="panel-heading"><div><p class="eyebrow">TU CAJA DE HERRAMIENTAS</p><h2 id="memory-title">Cada base cuenta.</h2></div><div class="memory-ring" id="memory-ring"><span id="memory-percent">0%</span></div></div><div class="memory-stats"><div><strong id="memory-total">--</strong><span>preguntas</span></div><div><strong id="memory-seen">0</strong><span>exploradas</span></div><div><strong id="memory-due">0</strong><span>por repasar</span></div></div><p class="mental-progress" id="mental-progress"></p></section>
 
         <section class="mission" aria-labelledby="phase-title">
           <div class="mission-copy"><p class="eyebrow inverse">MISIÓN ACTIVA · 20 → 10 → 20</p><h2 id="phase-title">Cargando campaña…</h2><p id="phase-objective"></p><div class="phase-progress" aria-label="Progreso de fases"><span id="build-progress">CONSTRUIR</span><i></i><span id="break-progress">ROMPER</span><i></i><span id="repair-progress">REPARAR</span></div></div>
@@ -117,17 +117,26 @@
       <div class="practice-workspace">
         <section class="mental-practice" id="mental-practice" hidden aria-labelledby="mental-question" data-step="think">
           <div class="mental-card-header"><div class="mental-course-heading"><span class="mental-course-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><use id="mental-course-icon" href="#practice-math"/></svg></span><div><p class="eyebrow">PRÁCTICA MENTAL</p><p id="mental-course"></p></div></div><span class="mental-kind" id="mental-kind"></span></div>
+          <label class="practice-topic-control" for="practice-topic-select">Qué quieres repasar<select id="practice-topic-select"><option value="all">Todos los temas del curso</option></select></label>
           <ol class="mental-steps" aria-label="Pasos de la práctica"><li data-step="think"><b>1</b>Piensa</li><li data-step="learn"><b>2</b>Descubre</li><li data-step="review"><b>3</b>Refuerza</li></ol>
-          <div class="mental-question-board"><p class="mental-topic" id="mental-topic"></p><h3 id="mental-question" tabindex="-1"></h3><p class="mental-instruction">Responde mentalmente. Sin prisa, sin calculadora.</p><button class="button primary" id="reveal-answer">Ver respuesta <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button></div>
+          <div class="mental-question-board"><p class="mental-topic" id="mental-topic"></p><h3 id="mental-question" tabindex="-1"></h3><p class="mental-instruction">Responde mentalmente. Sin prisa, sin calculadora.</p></div>
           <div class="mental-solution" id="mental-solution" hidden>
             <div class="mental-answer-block"><p class="eyebrow">LA RESPUESTA</p><p class="mental-answer" id="mental-answer" tabindex="-1"></p></div>
             <div class="mental-insights"><div><p class="mental-insight-label">La idea clave</p><p id="mental-explanation"></p></div><div class="mental-transfer"><p class="mental-insight-label">Te sirve cuando…</p><p id="mental-use"></p></div></div>
-            <div class="mental-recall"><p id="mental-rating-label">¿Cómo te salió?</p><p class="mental-instruction">Tu respuesta organiza el próximo repaso.</p><div class="mental-ratings" role="group" aria-labelledby="mental-rating-label"><button class="button secondary" data-recall="again"><span aria-hidden="true">↻</span>No lo sabía</button><button class="button secondary" data-recall="slow"><span aria-hidden="true">◷</span>Me costó</button><button class="button secondary" data-recall="easy"><span aria-hidden="true">ϟ</span>Lo sabía rápido</button></div></div>
+            <div class="mental-source-links"><a id="mental-source" href="https://admision.unsch.edu.pe/informacion/temario" target="_blank" rel="noopener noreferrer">Ver referencia del tema ↗</a></div>
           </div>
-          <p class="mental-feedback" id="mental-feedback" role="status"></p>
-          <div class="mental-next" id="mental-next" hidden><button class="button primary" id="next-question">Otra del mismo curso <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button><button class="button secondary" id="finish-practice">Terminar práctica</button></div>
         </section>
         <div class="practice-footer"><p id="practice-session-summary">Una pregunta puede desbloquear muchos problemas.</p><button class="text-button" id="practice-shuffle">Probar otro curso</button></div>
+      </div>
+      <div class="practice-review-dock" id="practice-review-dock">
+        <button class="button primary" id="reveal-answer">Ver respuesta <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+        <div class="mental-recall" id="mental-recall" hidden><p id="mental-rating-label">¿Cómo te salió?</p><div class="mental-ratings" role="group" aria-labelledby="mental-rating-label">
+          <button class="button secondary" data-recall="again" aria-keyshortcuts="1"><b>No sabía</b><small>Repetir · 1</small></button>
+          <button class="button secondary" data-recall="slow" aria-keyshortcuts="2"><b>Difícil</b><small>Reforzar · 2</small></button>
+          <button class="button secondary" data-recall="easy" aria-keyshortcuts="3"><b>Lo sabía rápido</b><small>Afianzar · 3</small></button>
+        </div></div>
+        <p class="mental-feedback" id="mental-feedback" role="status"></p>
+        <div class="mental-next" id="mental-next" hidden><button class="button primary" id="next-question">Otra del mismo curso <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button><button class="button secondary" id="finish-practice">Terminar práctica</button></div>
       </div>
     </dialog>
 
@@ -141,6 +150,7 @@
 
     <dialog id="k-dialog"><div class="dialog-title"><div><p class="eyebrow">REGLAS DE EVIDENCIA</p><h2>Cómo se asigna K</h2></div><button class="close" data-close="k-dialog" aria-label="Cerrar">×</button></div><div class="rules"><p><b>K1 · comprensión:</b> existe al menos un intento registrado.</p><p><b>K2 · reconocimiento:</b> al menos dos intentos.</p><p><b>K3 · aplicación:</b> dos preguntas nuevas y precisión nueva ≥70%.</p><p><b>K4 · transferencia:</b> cuatro nuevas/mezcladas y precisión ≥80%.</p><p><b>K5 · automático:</b> K4, retención 72 h ≥85%, tiempo ≤90 s y sin fallo reincidente.</p></div></dialog>
     <script src="mental-questions.js"></script>
+    <script src="mental-questions-extra.js"></script>
     <script src="app.js"></script>
     <script src="mental-practice.js"></script>
   </body>

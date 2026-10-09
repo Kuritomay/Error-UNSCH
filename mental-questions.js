@@ -29,8 +29,8 @@ const mentalSeeds = {
     ["Tawantinsuyo", "¿Cuál fue la capital del Tawantinsuyo?", "Cusco", "Fue el centro político del Estado inca.", "ubicas el núcleo de la organización incaica."],
     ["Tawantinsuyo", "¿Qué era el ayni?", "Trabajo de ayuda recíproca", "Una persona o familia ayuda y recibe ayuda en otra ocasión.", "distingues reciprocidad de otras formas de trabajo andino."],
     ["virreinato", "¿Quién representaba al rey en el Virreinato del Perú?", "El virrey", "Era la máxima autoridad del gobierno virreinal.", "identificas instituciones del periodo colonial."],
-    ["independencia", "¿Quién proclamó la independencia del Perú el 28 de julio de 1821?", "José de San Martín", "La proclamación no terminó por sí sola la guerra de independencia.", "ordenas proclamación y consolidación militar."],
-    ["Historia de Ayacucho y Huamanga", "¿En qué año se libró la batalla de Ayacucho?", "1824", "El 9 de diciembre, en la pampa de Quinua; la victoria patriota consolidó la independencia.", "ubicas un hito nacional y regional."],
+    ["independencia", "¿Qué papel desempeñó San Martín en la independencia del Perú?", "Dirigió la corriente libertadora del Sur y proclamó la independencia", "La proclamación política no terminó por sí sola la guerra contra el poder realista.", "distingues proclamación política y consolidación militar."],
+    ["Historia de Ayacucho y Huamanga", "¿Qué consecuencia decisiva tuvo la victoria patriota en la batalla de Ayacucho?", "Consolidó militarmente la independencia peruana", "La derrota del principal ejército realista llevó a la capitulación; algunos focos resistieron después.", "relacionas una batalla con sus consecuencias, no solo con una fecha."],
     ["Velasco y Reforma Agraria", "¿Qué gobierno impulsó la Reforma Agraria peruana de 1969?", "El de Juan Velasco Alvarado", "Transformó la estructura de propiedad agraria y afectó a las grandes haciendas.", "relacionas una reforma con su periodo y gobierno."]
   ],
   "Historia Universal": [
@@ -38,7 +38,7 @@ const mentalSeeds = {
     ["Roma", "¿Qué etapa romana tuvo emperadores: República o Imperio?", "Imperio", "La República precedió al Imperio.", "ordenas las principales etapas de Roma."],
     ["feudalismo", "¿Qué era el vasallaje?", "Un vínculo de fidelidad y obligaciones entre señor y vasallo", "Podía incluir protección y concesión de un feudo a cambio de servicios.", "distingues vasallaje de servidumbre campesina."],
     ["Renacimiento", "¿Qué movimiento colocó al ser humano y la cultura clásica en el centro de su interés?", "El humanismo renacentista", "Revaloró textos y modelos de la Antigüedad clásica.", "reconoces ideas del Renacimiento."],
-    ["Revolución francesa", "¿En qué año comenzó la Revolución francesa?", "1789", "Es un hito del fin del Antiguo Régimen.", "ubicas cambios políticos de la Edad Contemporánea."],
+    ["Revolución francesa", "¿Qué desigualdad del Antiguo Régimen cuestionó la Revolución francesa?", "Los privilegios estamentales frente a la igualdad jurídica", "Nobleza y clero gozaban de privilegios que no tenía el tercer estado.", "explicas causas sociales y cambios políticos de una revolución."],
     ["Revolución industrial", "¿En qué país comenzó la primera Revolución Industrial?", "Gran Bretaña", "La mecanización y el sistema fabril se expandieron desde allí.", "relacionas industrialización y transformaciones económicas."],
     ["Guerra Fría", "¿Qué dos potencias encabezaron los bloques de la Guerra Fría?", "Estados Unidos y la Unión Soviética", "Compitieron política, económica y militarmente sin una guerra directa general entre ambas.", "interpretas el mundo bipolar del siglo XX."]
   ],
@@ -253,4 +253,32 @@ function mentalQuestionId(course, prompt) {
   return `${course}-${prompt}`.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 const mentalFoundations = new Set(["triángulos notables", "etimología", "categorías variables", "función lineal", "función cuadrática"]);
-const mentalQuestionBank = Object.entries(mentalSeeds).flatMap(([course, rows]) => rows.map(([topic, prompt, answer, explanation, use, foundation = false]) => ({ id: mentalQuestionId(course, prompt), course, topic, prompt, answer, explanation, use, foundation: foundation || mentalFoundations.has(topic) })));
+function mentalQuestionFromRow(course, [topic, prompt, answer, explanation, use, foundation = false]) {
+  return { id: mentalQuestionId(course, prompt), course, topic, prompt, answer, explanation, use, foundation: foundation || mentalFoundations.has(topic) };
+}
+const mentalQuestionBank = Object.entries(mentalSeeds).flatMap(([course, rows]) => rows.map((row) => mentalQuestionFromRow(course, row)));
+
+const mentalReferences = {
+  official: { label: "Temario oficial UNSCH 2027-I", url: "https://admision.unsch.edu.pe/informacion/temario" },
+  dictionary: { label: "RAE · Diccionario de la lengua española", url: "https://dle.rae.es/" },
+  spelling: { label: "RAE · Acentuación y tilde", url: "https://www.rae.es/dpd/tilde" },
+  polysemy: { label: "RAE · Polisemia", url: "https://dle.rae.es/polisemia" },
+  hypernym: { label: "RAE · Hiperonimia", url: "https://dle.rae.es/hiperonimia" },
+  newton: { label: "OpenStax · Segunda ley de Newton", url: "https://openstax.org/books/f%C3%ADsica-universitaria-volumen-1/pages/5-3-segunda-ley-de-newton" },
+  meiosis: { label: "OpenStax · Meiosis y mitosis", url: "https://openstax.org/books/biology-2e/pages/11-1-the-process-of-meiosis" },
+  market: { label: "OpenStax · Oferta, demanda y equilibrio", url: "https://openstax.org/books/principles-economics-3e/pages/3-1-demand-supply-and-equilibrium-in-markets-for-goods-and-services" },
+  ayacucho: { label: "Britannica · Batalla de Ayacucho", url: "https://www.britannica.com/event/Battle-of-Ayacucho" },
+  velasco: { label: "Britannica · Velasco y sus reformas", url: "https://www.britannica.com/biography/Juan-Velasco-Alvarado" },
+  french: { label: "Britannica · Revolución francesa", url: "https://www.britannica.com/event/French-Revolution" }
+};
+function mentalReferenceFor(question) {
+  if (question.course === "Razonamiento verbal") return question.topic === "polisemia" ? mentalReferences.polysemy : ["hiperonimia", "hiponimia", "cohiponimia"].includes(question.topic) ? mentalReferences.hypernym : mentalReferences.dictionary;
+  if (question.course === "Lenguaje" && /acentuación|tilde|diptongo|enclíticos/.test(question.topic)) return mentalReferences.spelling;
+  if (question.course === "Física" && question.topic === "leyes de Newton") return mentalReferences.newton;
+  if (question.course === "Biología" && question.topic === "mitosis y meiosis") return mentalReferences.meiosis;
+  if (question.course === "Economía" && question.topic === "oferta y demanda") return mentalReferences.market;
+  if (question.topic === "Historia de Ayacucho y Huamanga") return mentalReferences.ayacucho;
+  if (question.topic === "Velasco y Reforma Agraria") return mentalReferences.velasco;
+  if (question.topic === "Revolución francesa") return mentalReferences.french;
+  return mentalReferences.official;
+}

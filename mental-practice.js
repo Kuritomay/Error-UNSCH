@@ -3,6 +3,7 @@ let activeMentalQuestion = null;
 let mentalSessionCount = 0;
 let mentalRecentQuestions = [];
 let practiceReturnFocus = null;
+let mentalTopicScope = "all";
 const practiceDialog = document.querySelector("#practice-dialog");
 const mentalSessionMisses = new Map();
 const mentalQuestionsByCourse = new Map(studyCourses.map(({ course }) => [course, mentalQuestionBank.filter((question) => question.course === course)]));
@@ -28,8 +29,8 @@ function mentalQuestionWeight(question) {
   const priority = mentalTopic(question)?.priority;
   return question.foundation || priority === "S" ? 4 : priority === "A" ? 2 : 1;
 }
-function pickMentalQuestion(course, now = Date.now()) {
-  const all = mentalQuestionsByCourse.get(course) || [];
+function pickMentalQuestion(course, now = Date.now(), scope = mentalTopicScope) {
+  const all = (mentalQuestionsByCourse.get(course) || []).filter((question) => scope === "all" || (scope === "deep" ? mentalTopic(question)?.treatment === "deep" : question.topic === scope));
   const last = activeMentalQuestion?.question.id || state.mentalLastQuestion;
   const withoutLast = all.filter((question) => question.id !== last);
   let pool = withoutLast.length ? withoutLast : all;
@@ -62,10 +63,11 @@ function renderMentalProgress() {
   document.querySelector("#practice-session-summary").textContent = mentalSessionCount ? `${mentalSessionCount} ${mentalSessionCount === 1 ? "respuesta valorada" : "respuestas valoradas"} en esta sesión. Cada idea cuenta.` : "Una pregunta puede desbloquear muchos problemas.";
 }
 
-function startMentalPractice(course) {
+function startMentalPractice(course, scope = activeMentalQuestion?.question.course === course ? mentalTopicScope : "all") {
   if (document.querySelector("#roll-dice").disabled) return;
-  const question = pickMentalQuestion(course);
+  const question = pickMentalQuestion(course, Date.now(), scope);
   if (!question) return;
+  mentalTopicScope = scope;
   activeMentalQuestion = { question, startedAt: performance.now(), revealed: false, rated: false };
   mentalRecentQuestions.push(question.id);
   mentalRecentQuestions = mentalRecentQuestions.slice(-12);
@@ -79,10 +81,18 @@ function startMentalPractice(course) {
   document.querySelector("#mental-course-icon").setAttribute("href", `#practice-${theme}`);
   document.querySelector("#mental-course").textContent = item.label || course;
   document.querySelector("#mental-topic").textContent = question.topic;
+  const topics = catalog.filter((topic) => topic.course === course && mentalBankTopicCounts.has(`${course}|${topic.name}`));
+  const deepOption = topics.some((topic) => topic.treatment === "deep") ? '<option value="deep">Solo temas profundos</option>' : "";
+  document.querySelector("#practice-topic-select").innerHTML = `<option value="all">Todos los temas del curso</option>${deepOption}${topics.map((topic) => `<option value="${escapeHtml(topic.name)}">${escapeHtml(topic.name)} · ${mentalBankTopicCounts.get(`${course}|${topic.name}`)}</option>`).join("")}`;
+  document.querySelector("#practice-topic-select").value = scope;
+  const reference = mentalReferenceFor(question);
+  document.querySelector("#mental-source").href = reference.url;
+  document.querySelector("#mental-source").textContent = `${reference.label} ↗`;
   setMentalStep("think");
   document.querySelector("#mental-kind").textContent = question.foundation ? "Herramienta base" : topic?.treatment === "deep" ? "Base de tema profundo" : "Base reutilizable";
   document.querySelector("#mental-question").textContent = question.prompt;
   document.querySelector("#mental-solution").hidden = true;
+  document.querySelector("#mental-recall").hidden = true;
   document.querySelector("#mental-next").hidden = true;
   document.querySelector("#reveal-answer").hidden = false;
   document.querySelector("#mental-feedback").textContent = "";
@@ -95,7 +105,7 @@ function startMentalPractice(course) {
     practiceDialog.showModal();
     document.documentElement.classList.add("practice-open");
   }
-  practiceDialog.scrollTop = 0;
+  document.querySelector(".practice-workspace").scrollTop = 0;
   const heading = document.querySelector("#mental-question");
   heading.focus({ preventScroll: true });
   heading.scrollIntoView({ block: "nearest", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
@@ -112,6 +122,7 @@ function revealMentalAnswer() {
   document.querySelector("#mental-use").textContent = question.use;
   document.querySelector("#reveal-answer").hidden = true;
   document.querySelector("#mental-solution").hidden = false;
+  document.querySelector("#mental-recall").hidden = false;
   const answer = document.querySelector("#mental-answer");
   answer.focus({ preventScroll: true });
   answer.scrollIntoView({ block: "nearest", behavior: "instant" });
@@ -140,6 +151,7 @@ function rateMentalRecall(rating) {
     button.setAttribute("aria-pressed", String(button.dataset.recall === rating));
   });
   document.querySelector("#mental-next").hidden = false;
+  document.querySelector("#mental-recall").hidden = true;
   document.querySelector("#next-question").focus({ preventScroll: true });
   document.querySelector("#next-question").scrollIntoView({ block: "nearest", behavior: "instant" });
 }
@@ -163,6 +175,7 @@ practiceDialog.addEventListener("close", () => {
   mentalSessionCount = 0;
   mentalSessionMisses.clear();
   activeMentalQuestion = null;
+  mentalTopicScope = "all";
   const focusTarget = practiceReturnFocus?.isConnected && practiceReturnFocus !== document.body ? practiceReturnFocus : document.querySelector("#start-practice");
   focusTarget.focus({ preventScroll: true });
   practiceReturnFocus = null;
@@ -180,4 +193,20 @@ document.querySelector("#practice-shuffle").addEventListener("click", () => {
   startMentalPractice(chosen.course);
 });
 window.addEventListener("hashchange", () => { if (practiceDialog.open) practiceDialog.close(); });
+document.querySelector("#practice-topic-select").addEventListener("change", (event) => {
+  if (activeMentalQuestion) startMentalPractice(activeMentalQuestion.question.course, event.target.value);
+});
+document.querySelector("#topics-body").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-practice-topic]");
+  if (!button) return;
+  const topic = catalog.find((topic) => topic.id === button.dataset.practiceTopic);
+  if (topic) startMentalPractice(topic.course, topic.name);
+});
 renderMentalProgress();
+
+document.addEventListener("keydown", (event) => {
+  if (!practiceDialog.open || event.repeat || event.ctrlKey || event.metaKey || event.altKey || event.target.closest("input,textarea,select,a")) return;
+  const rating = ({ "1": "again", "2": "slow", "3": "easy" })[event.key];
+  if (rating && activeMentalQuestion?.revealed && !activeMentalQuestion.rated) { event.preventDefault(); rateMentalRecall(rating); }
+  if (event.code === "Space" && !event.target.closest("button") && activeMentalQuestion && !activeMentalQuestion.revealed) { event.preventDefault(); revealMentalAnswer(); }
+});

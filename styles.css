@@ -440,3 +440,32 @@ legend { padding: 0 8px; color: var(--muted); font-size: 11px; }
   .practice-footer { flex-wrap: wrap; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; }button, a { transition: none; }.study-die.rolling svg { animation: none; } }
+
+/* Anki-like dock: only the question pane scrolls; answering stays within reach. */
+.practice-dialog[open] { display: flex; flex-direction: column; height: min(850px, calc(100dvh - 40px)); overflow: hidden; }
+.practice-dialog .dialog-exam-clock { position: relative; top: auto; flex: 0 0 var(--clock-height); }
+.practice-window-header { position: relative; top: auto; flex-shrink: 0; }
+.practice-workspace { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scroll-padding: 18px; }
+.practice-review-dock { flex-shrink: 0; padding: 14px 24px; border-top: 1px solid #415063; background: #151e2a; box-shadow: 0 -8px 24px #00000018; }
+.practice-review-dock > .button { display: flex; width: min(100%, 460px); margin: 0 auto; }
+.practice-review-dock .mental-recall { padding: 0; border: 0; }
+.practice-review-dock #mental-rating-label { margin-bottom: 10px; text-align: center; color: #b8c5d4; font-size: 10px; }
+.practice-review-dock .mental-ratings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 750px; margin: 0 auto; }
+.practice-review-dock .mental-ratings .button { display: grid; align-content: center; justify-items: center; gap: 5px; min-height: 58px; padding: 9px 6px; text-align: center; }
+.practice-review-dock .mental-ratings b { font-size: 11px; font-weight: 600; }
+.practice-review-dock .mental-ratings small { color: #a4b3c6; font: 8px var(--mono); }
+.practice-review-dock [data-recall="again"] { border-color: #ff929956; color: #ffc0c4; background: #ff92990b; }
+.practice-review-dock [data-recall="slow"] { border-color: #f0d29b56; color: #f0d29b; background: #f0d29b0b; }
+.practice-review-dock [data-recall="easy"] { border-color: #96dfc956; color: #abebd7; background: #96dfc90c; }
+.practice-review-dock .mental-feedback { max-width: 800px; margin: 0 auto 10px; padding: 0; border: 0; background: transparent; font-size: 10px; text-align: center; }
+.practice-review-dock .mental-next { justify-content: center; }
+.mental-source-links { padding: 12px 20px; border-top: 1px solid var(--line); }
+.mental-source-links a { display: inline-flex; align-items: center; min-height: 36px; color: var(--cyan); font-size: 10px; text-underline-offset: 4px; }
+.practice-topic-control { grid-column: span 12; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; color: #b3c1d3; font-size: 10px; }
+.practice-topic-control select { width: auto; max-width: 100%; flex: 1 1 230px; }
+.topic-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.topic-heading > b { flex: 1; min-width: 0; }
+.topic-practice { min-height: 44px; padding: 8px 10px; border: 1px solid #96dfc933; border-radius: 9px; background: #96dfc90c; color: var(--cyan); font: 9px var(--sans); }
+.topic-practice:hover { background: #96dfc920; }
+@media (max-width: 900px) { .practice-dialog[open] { height: 100dvh; max-height: 100dvh; } }
+@media (max-width: 560px) { .practice-review-dock { padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px)); }.practice-review-dock .mental-ratings b { font-size: 10px; }.practice-review-dock .mental-next { flex-wrap: nowrap; gap: 8px; }.practice-review-dock .mental-next .button { width: auto; flex: 1; padding: 10px 6px; font-size: 10px; }.practice-review-dock .mental-next svg { display: none; } }
