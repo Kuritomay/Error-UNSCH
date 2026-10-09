@@ -1,4 +1,4 @@
-# UNSCH Control Room
+# UNSCH Studio
 
 Panel de decisión para la preparación 20 → 10 → 20 antes del examen de admisión del 22 de noviembre de 2026.
 
@@ -17,14 +17,16 @@ El catálogo oficial está incluido en `app.js`. Los intentos, los errores y las
 
 ## Interfaz y navegación
 
-La barra lateral muestra una vista a la vez y permite navegar directamente entre los cuatro apartados:
+La interfaz utiliza un **bento oscuro**: tarjetas modulares, tipografía Inter, acentos verde suave y controles consistentes. La navegación es lateral en PC y una barra inferior en móvil. Muestra una vista a la vez y permite navegar entre cuatro apartados:
 
-- **Centro de mando:** dado y práctica mental al inicio, campaña activa, métricas, siguiente acción y evidencia de dominio.
-- **Microtemas:** catálogo oficial con filtros por tratamiento, curso y nivel K.
+- **Inicio:** tarjeta de dado, cuenta regresiva, preguntas exploradas y repasos pendientes, campaña activa, métricas, siguiente acción y evidencia de dominio.
+- **Microtemas:** catálogo oficial con filtros por tratamiento, curso y nivel K; tabla en PC y tarjetas con etiquetas en móvil.
 - **Registro de fallos:** registro de intentos incorrectos, patrones reincidentes y bitácora de reparaciones.
 - **Estrategia:** resumen de tratamientos y recomendaciones basadas en la evidencia registrada.
 
 Cada apartado puede abrirse mediante su fragmento de URL: `#inicio`, `#microtemas`, `#errores` o `#estrategia`.
+
+**Ajustes de estudio** permite cambiar el área académica y abrir la configuración de campaña desde cualquier tamaño de pantalla. El anillo de progreso muestra el porcentaje de preguntas mentales exploradas; no representa dominio de temas ni porcentaje de aciertos.
 
 La cuenta regresiva principal presenta días, horas, minutos y segundos con el mismo tamaño; los segundos se resaltan en rojo. El sitio utiliza `favicon.svg`, un icono propio basado en el símbolo de UNSCH Control.
 
@@ -48,6 +50,10 @@ En **Cursos disponibles y probabilidades** puedes excluir cursos manteniendo al 
 ## Bases mentales: entender y ganar velocidad
 
 El dado está al inicio, con **Iniciar práctica** justo debajo. Cada lanzamiento abre una pregunta del curso elegido. Iniciar práctica permite seguir con el último curso disponible o sortear uno si todavía no hay selección.
+
+La práctica abre **Modo enfoque**, una ventana nativa dentro de la misma web: modal amplio con disposición bento en PC y pantalla completa en móvil/tablet. La cuenta regresiva y el botón **Salir** permanecen arriba mientras se desplazan las preguntas y las explicaciones. Se puede salir antes de responder, terminar una sesión o cerrar con Escape en PC; se restaura el foco y los repasos valorados permanecen guardados. El panel de fondo queda bloqueado durante la práctica.
+
+**Probar otro curso** sortea entre los cursos disponibles distintos al actual, manteniendo sus pesos relativos; si solo hay un curso disponible, continúa en él. La pregunta y la selección del panel quedan sincronizadas.
 
 El banco local de `mental-questions.js` contiene **250 preguntas** para los 17 cursos: tablas del 6 al 9, porcentajes, MCD/MCM, ecuaciones, gráficas sencillas, geometría, razones trigonométricas, fuerzas y energía, etimología, gramática, cívica y bases de los otros cursos. Cada pregunta incluye respuesta, una explicación y **“Te sirve cuando…”**. Sus microtemas enlazan con el catálogo; la selección favorece las bases de temas profundos y herramientas como tablas, ángulos notables, raíces de palabras y gráficas elementales. “El 20%” es un criterio de utilidad, no un porcentaje demostrado de cobertura del examen.
 

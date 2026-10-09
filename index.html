@@ -2,22 +2,30 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Centro de mando de preparación UNSCH 2027-I" />
-    <meta name="theme-color" content="#0f172a" />
-    <title>UNSCH Control Room</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="UNSCH Studio: práctica mental, repasos y progreso para tu examen de admisión." />
+    <meta name="theme-color" content="#0c1016" />
+    <title>UNSCH Studio · Práctica y progreso</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Ir al contenido</a>
     <svg class="practice-symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
       <symbol id="practice-math" viewBox="0 0 32 32"><path d="M5 10h22M10 10v16M22 10v12c0 3 2 4 4 4M7 5h18"/></symbol>
       <symbol id="practice-science" viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="14" ry="5"/><ellipse cx="16" cy="16" rx="14" ry="5" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="14" ry="5" transform="rotate(120 16 16)"/><circle cx="16" cy="16" r="2"/></symbol>
       <symbol id="practice-words" viewBox="0 0 32 32"><path d="M16 8C12 5 7 5 3 6v20c4-1 9-1 13 2 4-3 9-3 13-2V6c-4-1-9-1-13 2v20M7 11h5M7 16h5M20 11h5M20 16h5"/></symbol>
       <symbol id="practice-humanities" viewBox="0 0 32 32"><path d="m3 10 13-7 13 7H3ZM6 14v10M13 14v10M20 14v10M27 14v10M3 28h26"/></symbol>
+      <symbol id="icon-home" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+      <symbol id="icon-book" viewBox="0 0 24 24"><path d="M12 5C9 3 5 3 3 4v16c3-1 6-1 9 1 3-2 6-2 9-1V4c-2-1-6-1-9 1v16"/></symbol>
+      <symbol id="icon-errors" viewBox="0 0 24 24"><path d="m12 3 10 18H2L12 3Zm0 6v5m0 3h.01"/></symbol>
+      <symbol id="icon-strategy" viewBox="0 0 24 24"><path d="M4 20V10m8 10V4m8 16v-7M2 20h20"/></symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
     </defs></svg>
     <aside class="exam-clock" id="exam-clock" aria-label="Cuenta regresiva para el examen de admisión">
       <div class="exam-clock-label"><span class="clock-dot" aria-hidden="true"></span><div><strong>RUMBO A LA UNSCH</strong><span>22 NOV 2026 · 08:00 · Perú</span></div></div>
@@ -30,70 +38,49 @@
     </aside>
     <div class="app-shell">
       <aside class="sidebar">
-        <a class="brand" href="#inicio" aria-label="Ir al centro de mando"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 4h22v24H5zM10 9v14M16 9v14M22 9v14" /></svg><span>UNSCH <b>CONTROL</b></span></a>
+        <a class="brand" href="#inicio" aria-label="Ir al inicio"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 4h22v24H5zM10 9v14M16 9v14M22 9v14" /></svg><span>UNSCH <b>STUDIO</b></span></a>
+        <p class="sidebar-caption">TU ESPACIO DE ESTUDIO</p>
         <nav aria-label="Navegación principal">
-          <a class="nav-link active" href="#inicio"><span>01</span>Centro de mando</a>
-          <a class="nav-link" href="#microtemas"><span>02</span>Microtemas</a>
-          <a class="nav-link" href="#errores"><span>03</span>Registro de fallos</a>
-          <a class="nav-link" href="#estrategia"><span>04</span>Estrategia</a>
+          <a class="nav-link active" href="#inicio"><svg aria-hidden="true"><use href="#icon-home"/></svg><span>Inicio</span></a>
+          <a class="nav-link" href="#microtemas"><svg aria-hidden="true"><use href="#icon-book"/></svg><span>Microtemas</span></a>
+          <a class="nav-link" href="#errores"><svg aria-hidden="true"><use href="#icon-errors"/></svg><span>Fallos</span></a>
+          <a class="nav-link" href="#estrategia"><svg aria-hidden="true"><use href="#icon-strategy"/></svg><span>Estrategia</span></a>
         </nav>
-        <div class="countdown-side" aria-live="polite"><p>EXAMEN DE ADMISIÓN</p><strong id="countdown-days">--</strong><span>días para detectar lo que falta</span><small>22 NOV 2026 · UNSCH</small></div>
+        <div class="countdown-side"><p>UN POCO CADA DÍA</p><strong id="countdown-days">--</strong><span>días para llegar con más confianza.</span><small>Aprende lo pequeño.<br />Resuelve lo grande.</small></div>
         <div class="sidebar-bottom">
-          <label for="area">ÁREA ACADÉMICA</label><select id="area"><option value="science">I · Ciencias</option><option value="letters">II · Letras</option></select>
-          <button class="side-button" id="plan-button">Configurar campaña</button>
+          <button class="side-button" id="settings-button"><svg aria-hidden="true"><use href="#icon-settings"/></svg>Ajustes de estudio</button>
         </div>
       </aside>
 
-      <main>
+      <main id="main-content" tabindex="-1">
         <section class="app-view" id="inicio" data-view>
         <header class="topbar">
-          <div><p class="eyebrow">PREPARACIÓN ORIENTADA A FALLOS</p><h1>Centro de mando</h1></div>
-          <div class="top-actions"><span class="storage-state"><i></i>Guardado en este dispositivo</span><button class="button secondary" id="attempt-button">Registrar intento</button></div>
+          <div><p class="eyebrow">TU RITMO. TU OBJETIVO.</p><h1>Hoy, un poco más cerca.</h1><p class="header-description">Bases claras, práctica breve y progreso con evidencia.</p></div>
+          <div class="top-actions"><span class="storage-state"><i></i>Guardado local</span><button class="button secondary" id="attempt-button">Registrar intento</button><button class="icon-button mobile-settings" id="mobile-settings-button" aria-label="Ajustes de estudio"><svg aria-hidden="true"><use href="#icon-settings"/></svg></button></div>
         </header>
 
+        <div class="dashboard-grid">
         <section class="panel dice-panel" aria-labelledby="dice-title">
-          <div class="panel-heading"><div><p class="eyebrow">POCO, PERO MUY ÚTIL</p><h2 id="dice-title">Lo básico, a toda velocidad.</h2></div></div>
-          <p class="panel-intro">Entenderlo primero. Recordarlo sin esfuerzo después. Lanza el dado y resuelve una pregunta mental.</p>
+          <div class="panel-heading"><div><p class="eyebrow">TU PRÓXIMO PEQUEÑO RETO</p><h2 id="dice-title">Pequeñas bases.<br /><span>Grandes avances.</span></h2></div><span class="card-tag">Práctica mental</span></div>
+          <p class="panel-intro">Deja que el dado elija. Una pregunta, una idea útil y un poco más de soltura.</p>
           <div class="dice-main">
             <div class="dice-control">
               <button class="study-die" id="roll-dice" aria-label="Lanzar dado y practicar un curso"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="8" y="8" width="84" height="84" rx="18"/><g><circle cx="29" cy="29" r="6"/><circle cx="71" cy="29" r="6"/><circle cx="29" cy="50" r="6"/><circle cx="71" cy="50" r="6"/><circle cx="29" cy="71" r="6"/><circle cx="71" cy="71" r="6"/></g></svg><span>Lanzar dado</span></button>
               <button class="button primary" id="start-practice">Iniciar práctica</button>
             </div>
-            <div class="dice-result" id="dice-result" role="status" aria-live="polite" aria-atomic="true"><p class="eyebrow">TU PRÓXIMO CURSO</p><h3 id="dice-course">Una base pequeña.<br />Muchos problemas más fáciles.</h3><p id="dice-detail">El dado elige con prioridad. Tú ganas soltura practicando.</p></div>
+            <div class="dice-result" id="dice-result" role="status" aria-live="polite" aria-atomic="true"><p class="eyebrow">¿POR DÓNDE EMPEZAMOS?</p><h3 id="dice-course">Un curso a la vez.</h3><p id="dice-detail">Elige con el dado o retoma tu último curso. La práctica se abre en su propia ventana.</p></div>
           </div>
 
-          <section class="mental-practice" id="mental-practice" hidden aria-labelledby="mental-question" data-step="think">
-            <div class="mental-card-header"><div class="mental-course-heading"><span class="mental-course-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><use id="mental-course-icon" href="#practice-math"/></svg></span><div><p class="eyebrow">PRÁCTICA MENTAL</p><p id="mental-course"></p></div></div><span class="mental-kind" id="mental-kind"></span></div>
-            <ol class="mental-steps" aria-label="Pasos de la práctica"><li data-step="think"><b>1</b>Piensa</li><li data-step="learn"><b>2</b>Descubre</li><li data-step="review"><b>3</b>Refuerza</li></ol>
-            <div class="mental-question-board">
-              <p class="mental-topic" id="mental-topic"></p>
-              <h3 id="mental-question" tabindex="-1"></h3>
-              <p class="mental-instruction">Un momento para pensar. La respuesta está en tu cabeza.</p>
-              <button class="button primary" id="reveal-answer">Ver respuesta <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button>
-            </div>
-            <div class="mental-solution" id="mental-solution" hidden>
-              <div class="mental-answer-block"><p class="eyebrow">LA RESPUESTA</p><p class="mental-answer" id="mental-answer"></p></div>
-              <div class="mental-insights"><div><p class="mental-insight-label"><span aria-hidden="true">01</span> La idea clave</p><p id="mental-explanation"></p></div><div class="mental-transfer"><p class="mental-insight-label"><span aria-hidden="true">02</span> Te sirve cuando…</p><p id="mental-use"></p></div></div>
-              <div class="mental-recall"><p id="mental-rating-label">¿Cómo te salió?</p><p class="mental-instruction">Elige una opción para organizar tu próximo repaso.</p>
-                <div class="mental-ratings" role="group" aria-labelledby="mental-rating-label">
-                  <button class="button secondary" data-recall="again"><span class="recall-icon" aria-hidden="true">↻</span><span class="recall-copy"><b>No lo sabía</b><small>Volver a intentarlo</small></span></button>
-                  <button class="button secondary" data-recall="slow"><span class="recall-icon" aria-hidden="true">◷</span><span class="recall-copy"><b>Me costó</b><small>Ganar soltura</small></span></button>
-                  <button class="button secondary" data-recall="easy"><span class="recall-icon" aria-hidden="true">ϟ</span><span class="recall-copy"><b>Lo sabía rápido</b><small>Afianzar la base</small></span></button>
-                </div>
-              </div>
-            </div>
-            <p class="mental-feedback" id="mental-feedback" role="status"></p>
-            <div class="mental-next" id="mental-next" hidden><button class="button primary" id="next-question">Otra del mismo curso</button><button class="button secondary" id="finish-practice">Terminar práctica</button></div>
-          </section>
-
-          <p class="mental-progress" id="mental-progress"></p>
           <div class="dice-actions" id="dice-actions" hidden><button class="text-button" id="dice-topics">Ver microtemas del curso</button><button class="text-button" id="dice-attempt">Registrar intento de examen</button></div>
           <details class="dice-settings"><summary>Cursos disponibles y probabilidades</summary><p class="panel-intro">Marca los cursos que puedes estudiar ahora. Sus probabilidades se recalculan automáticamente.</p><div class="dice-options" id="dice-options"></div><p class="dice-note">Pesos de estudio: muy alta 6 · alta 3 · complementaria 1 · selectiva 0,5. Son pesos relativos, no puntos del examen. RM corresponde a RLM en el catálogo. Actualidad no participa porque no tiene valoración indicada.</p></details>
         </section>
 
+        <section class="panel deadline-panel" aria-labelledby="deadline-title"><div class="panel-heading"><div><p class="eyebrow">EL GRAN OBJETIVO</p><h2 id="deadline-title">Nos vemos en la UNSCH.</h2></div><span class="card-tag">22 nov</span></div><div class="countdown-main"><span>TIEMPO HASTA EL EXAMEN</span><strong id="countdown-full" role="timer" aria-live="off"><span id="countdown-primary">--d --h --m</span><span class="countdown-seconds" id="countdown-seconds">--s</span></strong></div><p class="deadline-caption">Hoy tienes tiempo para convertir un fallo en una ventaja.</p></section>
+        <section class="panel memory-panel" aria-labelledby="memory-title"><div class="panel-heading"><div><p class="eyebrow">TU CAJA DE HERRAMIENTAS</p><h2 id="memory-title">Cada base cuenta.</h2></div><div class="memory-ring" id="memory-ring"><span id="memory-percent">0%</span></div></div><div class="memory-stats"><div><strong id="memory-total">250</strong><span>preguntas</span></div><div><strong id="memory-seen">0</strong><span>exploradas</span></div><div><strong id="memory-due">0</strong><span>por repasar</span></div></div><p class="mental-progress" id="mental-progress"></p></section>
+
         <section class="mission" aria-labelledby="phase-title">
           <div class="mission-copy"><p class="eyebrow inverse">MISIÓN ACTIVA · 20 → 10 → 20</p><h2 id="phase-title">Cargando campaña…</h2><p id="phase-objective"></p><div class="phase-progress" aria-label="Progreso de fases"><span id="build-progress">CONSTRUIR</span><i></i><span id="break-progress">ROMPER</span><i></i><span id="repair-progress">REPARAR</span></div></div>
-          <div class="countdown-main"><span>TIEMPO RESTANTE</span><strong id="countdown-full" aria-live="polite"><span id="countdown-primary">--d --h --m</span><span class="countdown-seconds" id="countdown-seconds">--s</span></strong><p>El objetivo no es evitar fallar.<br />Es fallar con tiempo para corregir.</p></div>
+          <button class="button secondary" id="mission-plan-button">Ajustar campaña <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button>
         </section>
 
         <section class="metric-grid" aria-label="Métricas basadas en evidencia">
@@ -110,7 +97,7 @@
         </div>
 
         <section class="panel evidence-panel" aria-labelledby="evidence-title"><div class="panel-heading"><div><p class="eyebrow">ESCALA K · NO ES AUTOEVALUACIÓN</p><h2 id="evidence-title">Evidencia de dominio</h2></div><button class="text-button" id="show-k-rules">Ver criterios K1–K5</button></div><div class="k-scale"><div><b>K0</b><span>Desconocido</span><small>Sin evidencia</small></div><div><b>K1</b><span>Comprensión</span><small>Primer intento</small></div><div><b>K2</b><span>Reconocimiento</span><small>2 intentos</small></div><div class="target"><b>K3</b><span>Aplicación</span><small>≥70% nuevo</small></div><div><b>K4</b><span>Transferencia</span><small>Mezclado ≥80%</small></div><div><b>K5</b><span>Automático</span><small>Tiempo + 72 h</small></div></div></section>
-
+        </div>
         </section>
 
         <section class="app-view errors-view" id="errores" data-view hidden aria-labelledby="failure-title">
@@ -121,9 +108,30 @@
 
         <section class="app-view topics-section" id="microtemas" data-view hidden aria-labelledby="topics-title"><div class="section-head"><div><p class="eyebrow">CATÁLOGO OFICIAL · NINGÚN TEMA SE BORRA</p><h1 id="topics-title">Todos los microtemas</h1><p id="catalog-summary">Cargando catálogo…</p></div><button class="button secondary" id="strategy-button">Recalcular estrategia</button></div><div class="filters" role="toolbar" aria-label="Filtros de microtemas"><button class="filter active" data-treatment="all">Todos</button><button class="filter" data-treatment="deep">Profundo</button><button class="filter" data-treatment="surface">Superficial</button><button class="filter" data-treatment="deferred">Diferido</button><button class="filter" data-treatment="risk">En riesgo</button><select id="course-filter" aria-label="Filtrar por curso"><option value="all">Todos los cursos</option></select><select id="k-filter" aria-label="Filtrar por nivel K"><option value="all">Todos los niveles K</option><option value="K0">K0</option><option value="K1">K1</option><option value="K2">K2</option><option value="K3">K3</option><option value="K4">K4</option><option value="K5">K5</option></select></div><div class="table-wrap"><table><thead><tr><th>Microtema</th><th>Tratamiento</th><th>P0</th><th>K</th><th>Nuevas</th><th>72 h</th><th>Tiempo</th><th>Fallos</th><th>R</th></tr></thead><tbody id="topics-body"></tbody></table></div><p class="table-note">Diferido significa “no invertir tiempo todavía”, nunca “eliminado”. Se reevaluará al iniciar Reparar.</p></section>
 
-        <section class="app-view strategy-view" id="estrategia" data-view hidden><div class="strategy-strip"><div><p class="eyebrow inverse">SISTEMA DE APOYO A DECISIONES</p><h1>La estrategia se adapta a la evidencia.</h1><p>El algoritmo recomienda. Tú decides qué cambio aceptar.</p></div><div class="strategy-numbers" id="strategy-numbers"></div><button class="button light" id="review-button">Revisar cambios</button></div></section>
+        <section class="app-view strategy-view" id="estrategia" data-view hidden><div class="strategy-strip"><div><p class="eyebrow inverse">MENOS IMPROVISACIÓN, MÁS DIRECCIÓN</p><h1>Una estrategia que aprende contigo.</h1><p>Las decisiones se apoyan en lo que ya has puesto a prueba.</p></div><div class="strategy-numbers" id="strategy-numbers"></div><button class="button primary" id="review-button">Revisar recomendaciones</button></div><div class="strategy-cards"><article class="panel"><span class="strategy-step">01</span><h2>Construye la base.</h2><p>Empieza por lo que más se reutiliza y desbloquea otros problemas.</p><span class="formula">P0 = H × I × U</span></article><article class="panel"><span class="strategy-step">02</span><h2>Encuentra el límite.</h2><p>Prueba preguntas nuevas. Un fallo identificado a tiempo es información útil.</p><span class="formula">PREGUNTA → DIAGNÓSTICO</span></article><article class="panel"><span class="strategy-step">03</span><h2>Repara y verifica.</h2><p>Aplica una corrección concreta y compruébala con una variante.</p><span class="formula">R = F × I × D</span></article></div></section>
       </main>
     </div>
+
+    <dialog id="practice-dialog" class="practice-dialog" aria-labelledby="practice-title">
+      <div class="practice-window-header"><div><p class="eyebrow">UN RETO A LA VEZ</p><h2 id="practice-title">Modo enfoque</h2></div><button class="button secondary" id="close-practice" data-close="practice-dialog">Salir <svg aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+      <div class="practice-workspace">
+        <section class="mental-practice" id="mental-practice" hidden aria-labelledby="mental-question" data-step="think">
+          <div class="mental-card-header"><div class="mental-course-heading"><span class="mental-course-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><use id="mental-course-icon" href="#practice-math"/></svg></span><div><p class="eyebrow">PRÁCTICA MENTAL</p><p id="mental-course"></p></div></div><span class="mental-kind" id="mental-kind"></span></div>
+          <ol class="mental-steps" aria-label="Pasos de la práctica"><li data-step="think"><b>1</b>Piensa</li><li data-step="learn"><b>2</b>Descubre</li><li data-step="review"><b>3</b>Refuerza</li></ol>
+          <div class="mental-question-board"><p class="mental-topic" id="mental-topic"></p><h3 id="mental-question" tabindex="-1"></h3><p class="mental-instruction">Responde mentalmente. Sin prisa, sin calculadora.</p><button class="button primary" id="reveal-answer">Ver respuesta <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button></div>
+          <div class="mental-solution" id="mental-solution" hidden>
+            <div class="mental-answer-block"><p class="eyebrow">LA RESPUESTA</p><p class="mental-answer" id="mental-answer" tabindex="-1"></p></div>
+            <div class="mental-insights"><div><p class="mental-insight-label">La idea clave</p><p id="mental-explanation"></p></div><div class="mental-transfer"><p class="mental-insight-label">Te sirve cuando…</p><p id="mental-use"></p></div></div>
+            <div class="mental-recall"><p id="mental-rating-label">¿Cómo te salió?</p><p class="mental-instruction">Tu respuesta organiza el próximo repaso.</p><div class="mental-ratings" role="group" aria-labelledby="mental-rating-label"><button class="button secondary" data-recall="again"><span aria-hidden="true">↻</span>No lo sabía</button><button class="button secondary" data-recall="slow"><span aria-hidden="true">◷</span>Me costó</button><button class="button secondary" data-recall="easy"><span aria-hidden="true">ϟ</span>Lo sabía rápido</button></div></div>
+          </div>
+          <p class="mental-feedback" id="mental-feedback" role="status"></p>
+          <div class="mental-next" id="mental-next" hidden><button class="button primary" id="next-question">Otra del mismo curso <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button><button class="button secondary" id="finish-practice">Terminar práctica</button></div>
+        </section>
+        <div class="practice-footer"><p id="practice-session-summary">Una pregunta puede desbloquear muchos problemas.</p><button class="text-button" id="practice-shuffle">Probar otro curso</button></div>
+      </div>
+    </dialog>
+
+    <dialog id="settings-dialog" aria-labelledby="settings-title"><div class="dialog-title"><div><p class="eyebrow">A TU MEDIDA</p><h2 id="settings-title">Ajustes de estudio</h2></div><button class="close" data-close="settings-dialog" aria-label="Cerrar ajustes">×</button></div><p class="dialog-copy">El área académica ajusta el impacto de los cursos en tu estrategia. El dado mantiene las prioridades que elegiste.</p><label for="area">Área académica<select id="area"><option value="science">I · Ciencias</option><option value="letters">II · Letras</option></select></label><button class="button secondary settings-plan" id="plan-button">Configurar fechas de campaña</button></dialog>
 
     <dialog id="attempt-dialog"><form id="attempt-form"><div class="dialog-title"><div><p class="eyebrow">EVIDENCIA NUEVA</p><h2>Registrar intento</h2></div><button type="button" class="close" data-close="attempt-dialog" aria-label="Cerrar">×</button></div><p class="dialog-copy">Un intento correcto lento también es señal. Regístralo para que el sistema no confunda conocimiento con rendimiento.</p><div class="form-grid"><label>Microtema<select id="attempt-topic" required></select></label><label>Fuente / pregunta<input id="attempt-source" placeholder="UNSCH 2026 · Física #12" required /></label><label>Resultado<select id="attempt-result"><option value="true">Correcta</option><option value="false">Incorrecta</option></select></label><label>Tiempo (segundos)<input id="attempt-time" type="number" min="1" placeholder="90" required /></label><label>Tipo de pregunta<select id="attempt-new"><option value="true">Nueva</option><option value="false">Repetida</option></select></label><label>Revisión<select id="attempt-review"><option value="normal">Primera vez</option><option value="24">Retención 24 h</option><option value="72">Retención 72 h</option><option value="168">Retención 7 días</option></select></label></div><fieldset id="failure-fields"><legend>Diagnóstico del fallo</legend><div class="form-grid"><label>Fallo primario<select id="error-type"><option value="recognition">No reconocí el modelo</option><option value="concept">Olvidé concepto</option><option value="wrong-model">Modelo equivocado</option><option value="procedure">Procedimiento</option><option value="calculation">Cálculo</option><option value="reading">Lectura</option><option value="time">Tiempo</option><option value="distractor">Distractor</option></select></label><label>Corrección mínima<textarea id="error-correction" placeholder='Ej.: “cada N unidades” + “coincidir nuevamente” → MCM'></textarea></label></div></fieldset><div class="dialog-actions"><button type="button" class="button secondary" data-close="attempt-dialog">Cancelar</button><button class="button primary" type="submit">Guardar evidencia</button></div></form></dialog>
 

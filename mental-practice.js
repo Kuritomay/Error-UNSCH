@@ -2,6 +2,8 @@
 let activeMentalQuestion = null;
 let mentalSessionCount = 0;
 let mentalRecentQuestions = [];
+let practiceReturnFocus = null;
+const practiceDialog = document.querySelector("#practice-dialog");
 const mentalSessionMisses = new Map();
 const mentalQuestionsByCourse = new Map(studyCourses.map(({ course }) => [course, mentalQuestionBank.filter((question) => question.course === course)]));
 const mentalCatalogTopics = new Map(catalog.map((topic) => [`${topic.course}|${topic.name}`, topic]));
@@ -50,7 +52,14 @@ function renderMentalProgress() {
   const progress = mentalStats();
   const seen = mentalQuestionBank.filter((question) => progress[question.id]);
   const due = seen.filter((question) => progress[question.id].dueAt <= Date.now());
-  document.querySelector("#mental-progress").textContent = `${mentalQuestionBank.length} preguntas disponibles · ${seen.length} practicadas · ${due.length} por repasar. Recuerdo autoevaluado.`;
+  const percentage = Math.round(seen.length / mentalQuestionBank.length * 100);
+  document.querySelector("#memory-total").textContent = mentalQuestionBank.length;
+  document.querySelector("#memory-seen").textContent = seen.length;
+  document.querySelector("#memory-due").textContent = due.length;
+  document.querySelector("#memory-percent").textContent = `${percentage}%`;
+  document.querySelector("#memory-ring").style.setProperty("--memory-progress", `${percentage}%`);
+  document.querySelector("#mental-progress").textContent = "Preguntas exploradas con recuerdo autoevaluado. Una base a la vez.";
+  document.querySelector("#practice-session-summary").textContent = mentalSessionCount ? `${mentalSessionCount} ${mentalSessionCount === 1 ? "respuesta valorada" : "respuestas valoradas"} en esta sesión. Cada idea cuenta.` : "Una pregunta puede desbloquear muchos problemas.";
 }
 
 function startMentalPractice(course) {
@@ -81,6 +90,12 @@ function startMentalPractice(course) {
   ["#mental-answer", "#mental-explanation", "#mental-use"].forEach((id) => { document.querySelector(id).textContent = ""; });
   document.querySelectorAll("[data-recall]").forEach((button) => { button.disabled = false; button.classList.remove("selected"); button.removeAttribute("aria-pressed"); });
   document.querySelector("#mental-practice").hidden = false;
+  if (!practiceDialog.open) {
+    practiceReturnFocus = document.activeElement;
+    practiceDialog.showModal();
+    document.documentElement.classList.add("practice-open");
+  }
+  practiceDialog.scrollTop = 0;
   const heading = document.querySelector("#mental-question");
   heading.focus({ preventScroll: true });
   heading.scrollIntoView({ block: "nearest", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
@@ -97,7 +112,9 @@ function revealMentalAnswer() {
   document.querySelector("#mental-use").textContent = question.use;
   document.querySelector("#reveal-answer").hidden = true;
   document.querySelector("#mental-solution").hidden = false;
-  document.querySelector('[data-recall="again"]').focus({ preventScroll: true });
+  const answer = document.querySelector("#mental-answer");
+  answer.focus({ preventScroll: true });
+  answer.scrollIntoView({ block: "nearest", behavior: "instant" });
 }
 
 function rateMentalRecall(rating) {
@@ -124,6 +141,7 @@ function rateMentalRecall(rating) {
   });
   document.querySelector("#mental-next").hidden = false;
   document.querySelector("#next-question").focus({ preventScroll: true });
+  document.querySelector("#next-question").scrollIntoView({ block: "nearest", behavior: "instant" });
 }
 
 document.addEventListener("study-course-selected", (event) => startMentalPractice(event.detail));
@@ -135,13 +153,31 @@ document.querySelector("#start-practice").addEventListener("click", () => {
 document.querySelector("#reveal-answer").addEventListener("click", revealMentalAnswer);
 document.querySelectorAll("[data-recall]").forEach((button) => button.addEventListener("click", () => rateMentalRecall(button.dataset.recall)));
 document.querySelector("#next-question").addEventListener("click", () => { if (activeMentalQuestion?.rated) startMentalPractice(activeMentalQuestion.question.course); });
-document.querySelector("#finish-practice").addEventListener("click", () => {
+document.querySelector("#finish-practice").addEventListener("click", () => practiceDialog.close());
+practiceDialog.addEventListener("close", () => {
+  if (practiceDialog.open) return;
+  document.documentElement.classList.remove("practice-open");
   document.querySelector("#mental-practice").hidden = true;
   renderMentalProgress();
-  document.querySelector("#mental-progress").textContent = `Práctica terminada: ${mentalSessionCount} ${mentalSessionCount === 1 ? "respuesta valorada" : "respuestas valoradas"}. Puedes volver cuando quieras.`;
+  if (mentalSessionCount) document.querySelector("#mental-progress").textContent = `Práctica terminada: ${mentalSessionCount} ${mentalSessionCount === 1 ? "respuesta valorada" : "respuestas valoradas"}. Puedes volver cuando quieras.`;
   mentalSessionCount = 0;
   mentalSessionMisses.clear();
   activeMentalQuestion = null;
-  document.querySelector("#start-practice").focus({ preventScroll: true });
+  const focusTarget = practiceReturnFocus?.isConnected && practiceReturnFocus !== document.body ? practiceReturnFocus : document.querySelector("#start-practice");
+  focusTarget.focus({ preventScroll: true });
+  practiceReturnFocus = null;
 });
+document.querySelector("#practice-shuffle").addEventListener("click", () => {
+  const available = availableStudyCourses();
+  const others = available.filter((item) => item.course !== activeMentalQuestion?.question.course);
+  const courses = others.length ? others : available;
+  const chosen = weightedCourse(courses);
+  if (!chosen) return;
+  state.diceLastCourse = chosen.course;
+  state.diceLastProbability = studyProbability(chosen, courses);
+  saveState();
+  renderDiceResult();
+  startMentalPractice(chosen.course);
+});
+window.addEventListener("hashchange", () => { if (practiceDialog.open) practiceDialog.close(); });
 renderMentalProgress();
