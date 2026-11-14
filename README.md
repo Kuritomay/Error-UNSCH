@@ -1,6 +1,6 @@
 # UNSCH Studio
 
-Panel de decisión para la preparación 20 → 10 → 20 antes del examen de admisión del 22 de noviembre de 2026.
+Panel de decisión para la preparación 20 → 10 → 20 antes del examen de admisión del 22 de noviembre de 2026 a las 08:00 (hora Perú).
 
 ## Principio operativo
 
