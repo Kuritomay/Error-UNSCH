@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="UNSCH Studio: práctica mental, repasos y progreso para tu examen de admisión." />
     <meta name="theme-color" content="#0c1016" />
+    <meta name="exam-timestamp" content="2026-11-22T08:00:00-05:00" />
+    <script>
+      (function () {
+        var meta = document.querySelector('meta[name="exam-timestamp"]');
+        if (meta && Date.now() >= new Date(meta.content).getTime()) {
+          document.documentElement.classList.add("exam-finished-boot");
+        }
+      })();
+    </script>
     <title>UNSCH Studio · Práctica y progreso</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,6 +35,14 @@
       <symbol id="icon-settings" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></symbol>
       <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
       <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+      <symbol id="icon-expand" viewBox="0 0 24 24"><path d="M9 3H3v6M15 3h6v6M21 15v6h-6M3 15v6h6"/></symbol>
+      <symbol id="icon-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+      <symbol id="icon-clipboard" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol>
+      <symbol id="icon-id-card" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><circle cx="8" cy="10" r="2"/><path d="M6 15a4 4 0 0 1 8 0"/><path d="M16 9h4"/><path d="M16 13h4"/></symbol>
+      <symbol id="icon-pencil" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+      <symbol id="icon-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol>
+      <symbol id="icon-shirt" viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></symbol>
     </defs></svg>
     <aside class="exam-clock" id="exam-clock" aria-label="Cuenta regresiva para el examen de admisión">
       <div class="exam-clock-label"><span class="clock-dot" aria-hidden="true"></span><div><strong>RUMBO A LA UNSCH</strong><span>22 NOV 2026 · 08:00 · Perú</span></div></div>
@@ -35,7 +52,29 @@
         <span class="clock-unit"><b data-countdown="minutes">--</b><small>min</small></span><span class="clock-separator" aria-hidden="true">:</span>
         <span class="clock-unit clock-seconds"><b data-countdown="seconds">--</b><small>seg</small></span>
       </div>
+      <button type="button" class="countdown-expand" aria-label="Ver contador en pantalla completa" title="Pantalla completa"><svg aria-hidden="true"><use href="#icon-expand"/></svg></button>
     </aside>
+    <section class="countdown-focus" id="countdown-focus" role="dialog" aria-modal="true" aria-label="Contador del examen en pantalla completa" hidden>
+      <button type="button" class="countdown-focus-close" id="countdown-focus-close" aria-label="Salir de pantalla completa"><svg aria-hidden="true"><use href="#icon-close"/></svg></button>
+      <div class="countdown-focus-clock" role="timer" aria-label="Tiempo restante para el examen" aria-live="off">
+        <span class="countdown-focus-unit"><b data-focus-countdown="days">--</b><small>días</small></span>
+        <span class="countdown-focus-separator" aria-hidden="true">:</span>
+        <span class="countdown-focus-unit"><b data-focus-countdown="hours">--</b><small>horas</small></span>
+        <span class="countdown-focus-separator" aria-hidden="true">:</span>
+        <span class="countdown-focus-unit"><b data-focus-countdown="minutes">--</b><small>minutos</small></span>
+        <span class="countdown-focus-separator" aria-hidden="true">:</span>
+        <span class="countdown-focus-unit countdown-focus-seconds"><b data-focus-countdown="seconds">--</b><small>segundos</small></span>
+      </div>
+      <div class="exam-warning" role="alert" hidden>
+        <svg aria-hidden="true"><use href="#icon-alert"/></svg>
+        <div>
+          <strong>YA DEBERÍAS ESTAR CAMINO AL EXAMEN</strong>
+          <p>Procura llegar antes de las 7:00 a. m. No dejes tu tranquilidad para el último minuto.</p>
+          <small>Ingreso permitido hasta las 8:30 a. m., según el prospecto UNSCH 2027-I. Las 7:00 a. m. son una recomendación preventiva, no el cierre oficial.</small>
+        </div>
+      </div>
+      <p class="countdown-focus-phrase">«Que el tiempo no te persiga. Haz que cuente.»</p>
+    </section>
     <div class="app-shell">
       <aside class="sidebar">
         <a class="brand" href="#inicio" aria-label="Ir al inicio"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 4h22v24H5zM10 9v14M16 9v14M22 9v14" /></svg><span>UNSCH <b>STUDIO</b></span></a>
@@ -75,8 +114,39 @@
           <details class="dice-settings"><summary>Cursos disponibles y probabilidades</summary><p class="panel-intro">Marca los cursos que puedes estudiar ahora. Sus probabilidades se recalculan automáticamente.</p><div class="dice-options" id="dice-options"></div><p class="dice-note">Pesos de estudio: muy alta 6 · alta 3 · complementaria 1 · selectiva 0,5. Son pesos relativos, no puntos del examen. RM corresponde a RLM en el catálogo. Actualidad usa un peso complementario propuesto.</p></details>
         </section>
 
-        <section class="panel deadline-panel" aria-labelledby="deadline-title"><div class="panel-heading"><div><p class="eyebrow">EL GRAN OBJETIVO</p><h2 id="deadline-title">Nos vemos en la UNSCH.</h2></div><span class="card-tag">22 nov · 08:00</span></div><div class="countdown-main"><span>TIEMPO HASTA EL EXAMEN</span><strong id="countdown-full" role="timer" aria-live="off"><span id="countdown-primary">--d --h --m</span><span class="countdown-seconds" id="countdown-seconds">--s</span></strong></div><p class="deadline-caption">Hoy tienes tiempo para convertir un fallo en una ventaja.</p></section>
+        <section class="panel deadline-panel" aria-labelledby="deadline-title"><div class="panel-heading"><div><p class="eyebrow">EL GRAN OBJETIVO</p><h2 id="deadline-title">Nos vemos en la UNSCH.</h2></div><span class="card-tag">22 nov · 08:00</span></div><div class="countdown-main"><span>TIEMPO HASTA EL EXAMEN</span><strong id="countdown-full" role="timer" aria-live="off"><span id="countdown-primary">--d --h --m</span><span class="countdown-seconds" id="countdown-seconds">--s</span></strong></div><p class="deadline-caption">Hoy tienes tiempo para convertir un fallo en una ventaja.</p><div class="exam-warning" role="alert" hidden><svg aria-hidden="true"><use href="#icon-alert"/></svg><div><strong>YA DEBERÍAS ESTAR CAMINO AL EXAMEN</strong><p>Procura llegar antes de las 7:00 a. m. No dejes tu tranquilidad para el último minuto.</p><small>Ingreso permitido hasta las 8:30 a. m., según el prospecto UNSCH 2027-I. Las 7:00 a. m. son una recomendación preventiva, no el cierre oficial.</small></div></div></section>
         <section class="panel memory-panel" aria-labelledby="memory-title"><div class="panel-heading"><div><p class="eyebrow">TU CAJA DE HERRAMIENTAS</p><h2 id="memory-title">Cada base cuenta.</h2></div><div class="memory-ring" id="memory-ring"><span id="memory-percent">0%</span></div></div><div class="memory-stats"><div><strong id="memory-total">--</strong><span>preguntas</span></div><div><strong id="memory-seen">0</strong><span>exploradas</span></div><div><strong id="memory-due">0</strong><span>por repasar</span></div></div><p class="mental-progress" id="mental-progress"></p></section>
+
+        </div>
+
+        <section class="support-card" aria-labelledby="support-title">
+          <div class="support-message">
+            <p class="eyebrow">UN MENSAJE DE LA APLICACIÓN</p>
+            <h2 id="support-title">Estás más cerca de lo que crees</h2>
+            <p>Has llegado hasta aquí con esfuerzo, dudas y esperanza. Confía en lo que has aprendido. Respira, concéntrate y da lo mejor de ti.</p>
+          </div>
+          <div class="support-before">
+            <div class="support-before-head">
+              <p class="eyebrow">ANTES DE SALIR DE CASA</p>
+              <span class="support-source">Prospecto UNSCH 2027-I · pág. 80</span>
+            </div>
+            <ul class="support-checklist">
+              <li><span class="support-icon"><svg aria-hidden="true"><use href="#icon-clipboard"/></svg></span><div><b>Ficha de inscripción</b><span>Llévala contigo.</span></div></li>
+              <li><span class="support-icon"><svg aria-hidden="true"><use href="#icon-id-card"/></svg></span><div><b>DNI original y vigente</b><span>Documento físico, sin reemplazos.</span></div></li>
+              <li><span class="support-icon"><svg aria-hidden="true"><use href="#icon-pencil"/></svg></span><div><b>Lápiz 2B, borrador blanco y tajador</b><span>Tu kit de marcado.</span></div></li>
+              <li><span class="support-icon"><svg aria-hidden="true"><use href="#icon-clock"/></svg></span><div><b>Ingreso hasta las 8:30 a. m.</b><span>Hora límite indicada en el prospecto.</span></div></li>
+              <li><span class="support-icon"><svg aria-hidden="true"><use href="#icon-ban"/></svg></span><div><b>Sin celulares ni dispositivos electrónicos</b><span>Nada de accesorios, bolsos ni bolígrafos.</span></div></li>
+              <li><span class="support-icon"><svg aria-hidden="true"><use href="#icon-shirt"/></svg></span><div><b>Ropa simple y calzado liviano</b><span>Preferentemente sin cierres ni elementos metálicos; cabello recogido cuando corresponda.</span></div></li>
+            </ul>
+            <p class="support-note">Estas indicaciones pertenecen al prospecto oficial. La recomendación de llegar antes de las 7:00 a. m. es preventiva y pertenece a esta aplicación, no a la UNSCH.</p>
+          </div>
+          <footer class="support-footer">
+            <p>«Un examen no define tu valor, pero tu esfuerzo merece esta oportunidad».</p>
+            <p>«Muchos éxitos, futuros universitarios».</p>
+          </footer>
+        </section>
+        <div class="dashboard-grid dashboard-grid-lower">
+
 
         <section class="mission" aria-labelledby="phase-title">
           <div class="mission-copy"><p class="eyebrow inverse">MISIÓN ACTIVA · 20 → 10 → 20</p><h2 id="phase-title">Cargando campaña…</h2><p id="phase-objective"></p><div class="phase-progress" aria-label="Progreso de fases"><span id="build-progress">CONSTRUIR</span><i></i><span id="break-progress">ROMPER</span><i></i><span id="repair-progress">REPARAR</span></div></div>
@@ -98,6 +168,7 @@
 
         <section class="panel evidence-panel" aria-labelledby="evidence-title"><div class="panel-heading"><div><p class="eyebrow">ESCALA K · NO ES AUTOEVALUACIÓN</p><h2 id="evidence-title">Evidencia de dominio</h2></div><button class="text-button" id="show-k-rules">Ver criterios K1–K5</button></div><div class="k-scale"><div><b>K0</b><span>Desconocido</span><small>Sin evidencia</small></div><div><b>K1</b><span>Comprensión</span><small>Primer intento</small></div><div><b>K2</b><span>Reconocimiento</span><small>2 intentos</small></div><div class="target"><b>K3</b><span>Aplicación</span><small>≥70% nuevo</small></div><div><b>K4</b><span>Transferencia</span><small>Mezclado ≥80%</small></div><div><b>K5</b><span>Automático</span><small>Tiempo + 72 h</small></div></div></section>
         </div>
+
         </section>
 
         <section class="app-view errors-view" id="errores" data-view hidden aria-labelledby="failure-title">
@@ -149,6 +220,15 @@
     <dialog id="plan-dialog"><form id="plan-form"><div class="dialog-title"><div><p class="eyebrow">CAMPAÑA 20 → 10 → 20</p><h2>Configurar fechas</h2></div><button type="button" class="close" data-close="plan-dialog" aria-label="Cerrar">×</button></div><p class="dialog-copy">El examen es fijo: 22 de noviembre de 2026 a las 08:00 (hora Perú). El ciclo principal ocupa 50 días y deja el tramo final para simulacros y recuperación.</p><label>Inicio de la campaña<input id="campaign-start" type="date" required /></label><div class="plan-calendar"><span>Construir<br /><b>20 días</b></span><span>Romper<br /><b>10 días</b></span><span>Reparar<br /><b>20 días</b></span><span>Final<br /><b>simulacros</b></span></div><div class="dialog-actions"><button type="button" class="button secondary" data-close="plan-dialog">Cancelar</button><button class="button primary" type="submit">Guardar campaña</button></div></form></dialog>
 
     <dialog id="k-dialog"><div class="dialog-title"><div><p class="eyebrow">REGLAS DE EVIDENCIA</p><h2>Cómo se asigna K</h2></div><button class="close" data-close="k-dialog" aria-label="Cerrar">×</button></div><div class="rules"><p><b>K1 · comprensión:</b> existe al menos un intento registrado.</p><p><b>K2 · reconocimiento:</b> al menos dos intentos.</p><p><b>K3 · aplicación:</b> dos preguntas nuevas y precisión nueva ≥70%.</p><p><b>K4 · transferencia:</b> cuatro nuevas/mezcladas y precisión ≥80%.</p><p><b>K5 · automático:</b> K4, retención 72 h ≥85%, tiempo ≤90 s y sin fallo reincidente.</p></div></dialog>
+
+    <section class="exam-farewell" id="exam-farewell" role="main" tabindex="-1" aria-labelledby="exam-farewell-title" hidden>
+      <div class="exam-farewell-panel">
+        <h1 id="exam-farewell-title">Sé que lo diste todo.</h1>
+        <p>Pase lo que pase, gracias por haber llegado hasta aquí</p>
+        <svg class="exam-farewell-heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+      </div>
+    </section>
+
     <script src="mental-questions.js"></script>
     <script src="mental-questions-extra.js"></script>
     <script src="app.js"></script>

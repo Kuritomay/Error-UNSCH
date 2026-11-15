@@ -121,6 +121,29 @@ main:focus { outline: none; }
 .countdown-main strong { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-top: 10px; font: 500 clamp(23px, 2.5vw, 36px) var(--mono); letter-spacing: -1.8px; }
 .countdown-seconds { color: var(--danger); }
 .deadline-caption { margin: 18px 0 0; max-width: 330px; color: #b4bfd2; font-size: 11px; line-height: 1.7; }
+
+/* A calm glass card below the counter: one human message, then the official checklist. */
+.dashboard-grid-lower { margin-top: 18px; }
+.support-card { display: grid; grid-template-columns: 1fr; gap: clamp(22px, 3vw, 40px); margin-top: 18px; padding: clamp(22px, 3vw, 34px); border: 1px solid #c8f29a24; border-radius: 24px; background: radial-gradient(ellipse at 0% 0%, #c8f29a14, transparent 48%), linear-gradient(145deg, #1a232bd9, #10161dd9 55%, #141c21d9); box-shadow: inset 0 1px 0 #ffffff10, 0 20px 70px #00000024; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.support-message { align-self: start; min-width: 0; }
+.support-message .eyebrow { color: var(--lime); }
+.support-message h2 { max-width: 17ch; margin-bottom: 14px; font-size: clamp(23px, 2.6vw, 32px); letter-spacing: -.9px; }
+.support-message > p:last-child { max-width: 46ch; margin: 0; color: #c6d0dc; font-size: 13px; line-height: 1.8; }
+.support-before { min-width: 0; padding-top: 20px; border-top: 1px solid #c8f29a1a; }
+.support-before-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 16px; }
+.support-before-head .eyebrow { margin-bottom: 0; }
+.support-source { color: #9fb0a6; font: 9px var(--mono); letter-spacing: .2px; line-height: 1.6; }
+.support-checklist { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.support-checklist li { display: flex; align-items: flex-start; gap: 10px; min-width: 0; padding: 12px; border: 1px solid #c8f29a14; border-radius: 13px; background: #0b1113a6; }
+.support-icon { display: grid; place-items: center; flex: 0 0 30px; width: 30px; height: 30px; border: 1px solid #c8f29a20; border-radius: 9px; background: #c8f29a0d; color: var(--lime); }
+.support-icon svg { width: 16px; height: 16px; }
+.support-checklist b, .support-checklist span:not(.support-icon) { display: block; }
+.support-checklist b { color: #e8eee9; font-size: 11px; font-weight: 600; line-height: 1.45; }
+.support-checklist div > span { margin-top: 4px; color: #a9b7ae; font-size: 9px; line-height: 1.55; }
+.support-note { margin: 14px 0 0; padding-top: 13px; border-top: 1px solid #c8f29a14; color: #a9b7ae; font-size: 10px; line-height: 1.7; }
+.support-footer { grid-column: 1 / -1; display: grid; align-items: baseline; justify-content: space-between; gap: 8px 26px; padding-top: 20px; border-top: 1px solid #c8f29a1a; }
+.support-footer p { margin: 0; color: #c1cdc5; font-size: 12px; line-height: 1.7; }
+.support-footer p:last-child { color: var(--lime); font-weight: 600; }
 .memory-panel .panel-heading { align-items: center; }
 .memory-ring { --memory-progress: 0%; display: grid; place-items: center; flex: 0 0 60px; width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(var(--cyan) var(--memory-progress), #293640 0); }
 .memory-ring span { display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%; background: var(--panel); color: var(--cyan); font: 12px var(--mono); }
@@ -224,6 +247,35 @@ td small { margin-top: 5px; color: var(--muted); font: 10px var(--sans); }
 .clock-unit small { margin-top: 5px; color: #99a7b6; font: 8px var(--mono); }
 .clock-separator { align-self: flex-start; color: #586574; font: 21px var(--mono); }
 .clock-seconds b { color: var(--danger); }
+.countdown-expand { display: grid; place-items: center; flex: 0 0 36px; width: 36px; height: 36px; min-height: 36px; padding: 0; border: 1px solid #ffffff1a; border-radius: 10px; background: transparent; color: #99a7b6; }
+.countdown-expand:hover { border-color: #ffffff38; color: #e8edf3; }
+.countdown-expand svg { width: 16px; height: 16px; }
+.dialog-exam-clock .countdown-expand { flex-basis: 32px; width: 32px; height: 32px; min-height: 32px; }
+
+/* Immersive countdown: only the clock and one sentence on a deep black canvas. */
+html.countdown-focus-open { overflow: hidden; }
+.countdown-focus { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(30px, 7vh, 72px); padding: max(24px, env(safe-area-inset-top, 0px)) clamp(16px, 4vw, 56px) max(24px, env(safe-area-inset-bottom, 0px)); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; background: #0B0E13; color: #fff; font-family: var(--mono); text-align: center; }
+.countdown-focus:fullscreen { width: 100vw; height: 100dvh; }
+.countdown-focus-close { position: absolute; top: max(16px, env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border: 1px solid #ffffff26; border-radius: 50%; background: transparent; color: #ffffff99; }
+.countdown-focus-close:hover { border-color: #ffffff66; color: #fff; }
+.countdown-focus-close svg { width: 18px; height: 18px; }
+.countdown-focus-clock { display: flex; align-items: flex-end; justify-content: center; gap: clamp(2px, .9vw, 18px); width: 100%; font-variant-numeric: tabular-nums; }
+.countdown-focus-unit { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.countdown-focus-unit b { color: #fff; font-size: clamp(30px, 11vw, 190px); font-weight: 600; letter-spacing: -.07em; line-height: .84; }
+.countdown-focus-unit small { margin-top: clamp(9px, 1.8vh, 20px); color: #7f8796; font-size: clamp(8px, .9vw, 13px); letter-spacing: .28em; text-transform: uppercase; }
+.countdown-focus-separator { align-self: flex-end; padding-bottom: clamp(20px, 4vh, 44px); color: #39404d; font-size: clamp(24px, 8vw, 140px); line-height: .84; }
+.countdown-focus-seconds b { color: #C8F29A; }
+.countdown-focus-phrase { max-width: 26ch; margin: 0; color: #d8dee8; font-family: var(--sans); font-size: clamp(16px, 2.1vw, 27px); font-weight: 500; letter-spacing: -.02em; line-height: 1.45; text-wrap: balance; }
+.countdown-focus.is-done .countdown-focus-phrase { color: #C8F29A; font-family: var(--mono); font-size: clamp(26px, 5vw, 64px); letter-spacing: -.04em; }
+
+/* The three-hour warning stays quiet: translucent red, no blinking, no layout jump. */
+.exam-warning { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 11px; margin-top: 18px; padding: 14px 15px; border: 1px solid #ff6b7447; border-radius: 14px; background: #ff4d5814; color: #ffd0d3; }
+.exam-warning > svg { width: 21px; height: 21px; margin-top: 1px; color: #ff8a92; }
+.exam-warning strong { display: block; color: #ff9299; font: 600 12px var(--mono); letter-spacing: .04em; line-height: 1.55; }
+.exam-warning p { margin: 6px 0 0; color: #ffd0d3; font-size: 13px; line-height: 1.6; }
+.exam-warning small { display: block; margin-top: 8px; color: #eeb6bb; font-size: 11px; line-height: 1.65; }
+.countdown-focus .exam-warning { width: min(100%, 660px); margin-top: 0; font-family: var(--sans); text-align: left; }
+.countdown-focus .exam-warning strong { font-size: 13px; }
 dialog { width: min(650px, calc(100% - 32px)); max-height: calc(100dvh - 40px); padding: 24px; border: 1px solid #435065; border-radius: 22px; background: var(--panel); color: var(--ink); box-shadow: 0 28px 100px #00000099; overflow-y: auto; overscroll-behavior: contain; }
 dialog::backdrop { background: #03070dc9; backdrop-filter: blur(6px); }
 .dialog-exam-clock { position: sticky; top: -24px; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: var(--clock-height); margin: -24px -24px 24px; padding: 12px 20px; border-bottom: 1px solid #34404d; background: #121923; }
@@ -408,6 +460,13 @@ legend { padding: 0 8px; color: var(--muted); font-size: 11px; }
   .clock-unit { min-width: 28px; }
   .clock-unit b { font-size: 22px; }
   .clock-separator { font-size: 18px; }
+  .countdown-expand { flex-basis: 32px; width: 32px; height: 32px; min-height: 32px; }
+  .countdown-focus { gap: clamp(24px, 6vh, 48px); }
+  .countdown-focus-clock { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 7vh, 48px) 12px; }
+  .countdown-focus-separator { display: none; }
+  .countdown-focus-unit b { font-size: clamp(54px, 19vw, 130px); }
+  .countdown-focus-unit small { margin-top: 8px; }
+  .countdown-focus-phrase { max-width: 20ch; font-size: clamp(15px, 4.6vw, 22px); }
   dialog { padding: 20px; border-radius: 18px; }
   .dialog-exam-clock { top: -20px; margin: -20px -20px 22px; padding: 12px 14px; }
   .dialog-exam-clock .clock-unit { min-width: 24px; }
@@ -439,6 +498,16 @@ legend { padding: 0 8px; color: var(--muted); font-size: 11px; }
   .mental-next .button { width: 100%; }
   .practice-footer { flex-wrap: wrap; }
 }
+@media (max-width: 420px) {
+  .exam-clock { gap: 6px; }
+  .exam-clock-label strong, .exam-clock-label div > span { max-width: 62px; font-size: 7px; }
+  .clock-unit { min-width: 24px; }
+  .clock-unit b { font-size: 20px; }
+  .clock-separator { font-size: 16px; }
+  .countdown-expand { flex-basis: 30px; width: 30px; height: 30px; min-height: 30px; }
+  .countdown-expand svg { width: 14px; height: 14px; }
+  .countdown-focus-close { width: 38px; height: 38px; }
+}
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; }button, a { transition: none; }.study-die.rolling svg { animation: none; } }
 
 /* Anki-like dock: only the question pane scrolls; answering stays within reach. */
@@ -469,3 +538,34 @@ legend { padding: 0 8px; color: var(--muted); font-size: 11px; }
 .topic-practice:hover { background: #96dfc920; }
 @media (max-width: 900px) { .practice-dialog[open] { height: 100dvh; max-height: 100dvh; } }
 @media (max-width: 560px) { .practice-review-dock { padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px)); }.practice-review-dock .mental-ratings b { font-size: 10px; }.practice-review-dock .mental-next { flex-wrap: nowrap; gap: 8px; }.practice-review-dock .mental-next .button { width: auto; flex: 1; padding: 10px 6px; font-size: 10px; }.practice-review-dock .mental-next svg { display: none; } }
+
+/* Farewell: full viewport, no navigation, no controls, a slow and quiet fade. */
+html.exam-finished, html.exam-finished-boot { overflow: hidden; background: #0B0E13; }
+html.exam-finished body > :not(#exam-farewell),
+html.exam-finished-boot body > :not(#exam-farewell) { display: none !important; }
+.exam-farewell { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; padding: max(28px, env(safe-area-inset-top, 0px)) clamp(20px, 5vw, 56px) max(28px, env(safe-area-inset-bottom, 0px)); background: #0B0E13; color: #f1f4f8; text-align: center; opacity: 0; transition: opacity 2s ease; }
+.exam-farewell.is-visible { opacity: 1; }
+html.exam-finished-boot .exam-farewell { display: flex !important; opacity: 1; transition: none; }
+.exam-farewell:focus { outline: none; }
+.exam-farewell-panel { display: grid; justify-items: center; gap: clamp(14px, 2.4vh, 22px); max-width: 900px; }
+.exam-farewell h1 { margin: 0; font-size: clamp(34px, 8vw, 92px); font-weight: 600; letter-spacing: -.05em; line-height: 1.05; text-wrap: balance; }
+.exam-farewell p { margin: 0; max-width: 34ch; color: #aeb8c6; font-size: clamp(13px, 1.8vw, 18px); line-height: 1.65; text-wrap: balance; }
+.exam-farewell-heart { width: 20px; height: 20px; margin-top: 6px; color: #C8F29A; fill: currentColor; stroke: none; }
+@media (prefers-reduced-motion: reduce) { .exam-farewell { transition: none; } }
+
+@media (max-width: 560px) {
+  .support-source { font-size: 8px; }
+  .exam-warning { padding: 13px; }
+  .countdown-focus .exam-warning p { font-size: 12px; }
+}
+@media (min-width: 561px) {
+  .support-checklist { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .support-footer { display: flex; flex-wrap: wrap; }
+}
+@media (min-width: 901px) {
+  .support-card { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+  .support-before { padding-top: 0; padding-left: clamp(22px, 3vw, 40px); border-top: 0; border-left: 1px solid #c8f29a1a; }
+}
+@media (max-height: 760px) {
+  .countdown-focus { justify-content: flex-start; padding-top: max(64px, calc(env(safe-area-inset-top, 0px) + 54px)); padding-bottom: max(28px, env(safe-area-inset-bottom, 0px)); }
+}
